@@ -16,7 +16,7 @@ type CreateTaskUseCaseImpl struct {
 	db TaskRepository
 }
 
-func NewCreateTaskUse(db TaskRepository) *CreateTaskUseCaseImpl {
+func NewCreateTaskUseCase(db TaskRepository) *CreateTaskUseCaseImpl {
 	return &CreateTaskUseCaseImpl{
 		db: db,
 	}

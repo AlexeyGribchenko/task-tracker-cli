@@ -16,7 +16,7 @@ func NewGetTasksUseCase(db TaskRepository) *GetTaskUseCaseImpl {
 	}
 }
 
-var _ GetTaskUseCase = (*GetTaskUseCaseImpl)(nil)
+var _ GetTasksUseCase = (*GetTaskUseCaseImpl)(nil)
 
 func (uc *GetTaskUseCaseImpl) Execute() ([]domain.Task, error) {
 

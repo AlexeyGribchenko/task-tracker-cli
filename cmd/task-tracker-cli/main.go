@@ -27,7 +27,7 @@ func main() {
 	}
 
 	getUC := usecase.NewGetTasksUseCase(db)
-	createUC := usecase.NewCreateTaskUse(db)
+	createUC := usecase.NewCreateTaskUseCase(db)
 	updateUC := usecase.NewUpdateTaskUseCase(db)
 
 	writer := cli.NewWriter(cfg.Format)

@@ -7,7 +7,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
 )
 
-const querryUpdateTaskStatus = `
+const queryUpdateTaskStatus = `
 	UPDATE tasks
 	SET status = $1, updated_at = $2
 	WHERE id = $3
@@ -15,7 +15,7 @@ const querryUpdateTaskStatus = `
 
 func (s *Storage) UpdateTaskStatus(id int, status domain.TaskStatus) error {
 
-	result, err := s.db.Exec(querryUpdateTaskStatus,
+	result, err := s.db.Exec(queryUpdateTaskStatus,
 		string(status),
 		time.Now().UTC(),
 		id,

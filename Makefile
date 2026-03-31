@@ -1,4 +1,4 @@
-.PHONY: tests build env db-init db-drop
+.PHONY: test build env db-init db-drop
 
 # application
 APP_NAME := task
@@ -11,8 +11,8 @@ BUILD_PATH := ./cmd/task-tracker-cli/
 SCHEMA_PATH := ./scripts/schema.sql
 STORAGE_PATH := ./storage/storage.db
 
-tests:
-	go test ./...
+test:
+	go test -v -cover ./...
 
 build: env db-init
 	@export CGO_ENABLED=1

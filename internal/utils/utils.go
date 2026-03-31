@@ -6,3 +6,7 @@ func ValueFromPointer(ptr *string) string {
 	}
 	return ""
 }
+
+func PointerFromValue(val string) *string {
+	return &val
+}

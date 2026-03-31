@@ -22,14 +22,14 @@ const (
 
 type App struct {
 	createUC usecase.CreateTaskUseCase
-	getAllUC usecase.GetTaskUseCase
+	getAllUC usecase.GetTasksUseCase
 	updateUC usecase.UpdateTaskStatusUseCase
 	writer   *CLIWriter
 }
 
 func New(
 	cuc usecase.CreateTaskUseCase,
-	guc usecase.GetTaskUseCase,
+	guc usecase.GetTasksUseCase,
 	uuc usecase.UpdateTaskStatusUseCase,
 	wr *CLIWriter,
 ) *App {
