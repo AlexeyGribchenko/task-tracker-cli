@@ -1,4 +1,4 @@
-.PHONY: test build env db-init db-drop
+.PHONY: test build env db-init db-drop test-coverage
 
 # application
 APP_NAME := task
@@ -13,6 +13,12 @@ STORAGE_PATH := ./storage/storage.db
 
 test:
 	go test -v -cover ./...
+
+test-cover:
+	go test -coverprofile=cov.out ./...
+
+test-coverage: test-cover
+	go tool cover -html=cov.out
 
 build: env db-init
 	@export CGO_ENABLED=1
