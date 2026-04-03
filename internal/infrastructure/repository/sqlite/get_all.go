@@ -6,7 +6,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
 )
 
-const getAllquery = `
+const queryGetAll = `
 	SELECT id, name, description, status, created_at, updated_at
 	FROM tasks
 `
@@ -14,7 +14,7 @@ const getAllquery = `
 func (s *Storage) GetTasks() ([]domain.Task, error) {
 	const op = "repository.sqlite"
 
-	rows, err := s.db.Query(getAllquery)
+	rows, err := s.db.Query(queryGetAll)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
