@@ -126,7 +126,7 @@ func TestCreate(t *testing.T) {
 			mockBehaviour: func(s *mocks.MockTaskRepository, input domain.Task) {},
 			errorExpected: true,
 			errorIs:       true,
-			expectedError: ErrEmptyTaskName,
+			expectedError: domain.ErrInvalidTaskName,
 		},
 		{
 			name:  "Error - Database error",

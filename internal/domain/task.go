@@ -8,20 +8,13 @@ import (
 
 var (
 	ErrInvalidTaskStatus = errors.New("invalid task status!")
+	ErrInvalidTaskName   = errors.New("invalid task name!")
 )
 
 type TaskStatus string
 
 func (t TaskStatus) String() string {
 	return string(t)
-}
-
-func (t TaskStatus) IsValid() bool {
-	switch t {
-	case TaskStatusCreated, TaskStatusCompleted, TaskStatusCancelled, TaskStatusInProgress:
-		return true
-	}
-	return false
 }
 
 const (
@@ -45,14 +38,19 @@ type Task struct {
 	UpdatedAt   time.Time
 }
 
-func NewTask(name string, description *string) *Task {
+func NewTask(name string, description *string) (*Task, error) {
+
+	if name == "" {
+		return nil, ErrInvalidTaskName
+	}
+
 	return &Task{
 		Name:        name,
 		Status:      TaskStatusCreated,
 		Description: description,
 		CreatedAt:   time.Now().UTC(),
 		UpdatedAt:   time.Now().UTC(),
-	}
+	}, nil
 }
 
 func ParseStatus(input string) (TaskStatus, error) {

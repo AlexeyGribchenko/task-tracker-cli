@@ -1,15 +1,10 @@
 package usecase
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
-)
-
-var (
-	ErrEmptyTaskName = errors.New("empty task name!")
 )
 
 type CreateTaskUseCaseImpl struct {
@@ -25,14 +20,14 @@ func NewCreateTaskUseCase(db TaskRepository) *CreateTaskUseCaseImpl {
 var _ CreateTaskUseCase = (*CreateTaskUseCaseImpl)(nil)
 
 func (uc *CreateTaskUseCaseImpl) Execute(input dto.CreateTask) (*domain.Task, error) {
+	const op = "usecase.create.Execute"
 
-	if input.Name == "" {
-		return nil, ErrEmptyTaskName
+	task, err := domain.NewTask(input.Name, input.Description)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	task := domain.NewTask(input.Name, input.Description)
-
-	task, err := uc.db.CreateTask(*task)
+	task, err = uc.db.CreateTask(*task)
 	if err != nil {
 		return nil, fmt.Errorf("usecase.create: failed to create task in db: %w", err)
 	}
