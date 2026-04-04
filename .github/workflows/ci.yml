@@ -1,0 +1,59 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.25.1'
+        check-latest: true
+
+    - name: Cache Go modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Run tests
+      run: go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        format: golang
+        file: coverage.out
+        github-token: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Build application
+      run: CGO_ENABLED=0 GOOS=linux go build -o tasks ./cmd/task-tracker-cli
+
+    - name: Check formatting
+      run: |
+        if [ -n "$(gofmt -l .)" ]; then
+          echo "WARN: Some files are not formatted correctly:"
+          gofmt -l .
+          echo "Run 'gofmt -w .' to fix formatting"
+          exit 1
+        else
+          echo "OK: All files are properly formatted"
+        fi
