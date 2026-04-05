@@ -5,7 +5,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
 )
 
-//go:generate mockgen -source=interface.go -destination=mocks/mock_interfaces.go -package=mocks
+//go:generate mockgen -source=interface.go -destination=mocks/interfaces_mock.go -package=mocks
 
 type TaskRepository interface {
 	GetTasks() ([]domain.Task, error)

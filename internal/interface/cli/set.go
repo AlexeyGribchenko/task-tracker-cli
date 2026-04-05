@@ -27,7 +27,6 @@ func (a *App) Set(args []string) error {
 		ID:     id,
 		Status: status,
 	}
-	fmt.Println(input)
 
 	err = a.updateUC.Execute(input)
 	if err != nil {

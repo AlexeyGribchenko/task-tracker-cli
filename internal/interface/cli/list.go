@@ -36,8 +36,8 @@ func (a *App) List(args []string) error {
 			task.ID,
 			task.Name,
 			utils.ValueFromPointer(task.Description),
-			task.CreatedAt.Format("02.01.06"),
-			task.UpdatedAt.Format("02.01.06"),
+			task.CreatedAt.Format("15:04 02.01"),
+			task.UpdatedAt.Format("15:04 02.01"),
 			task.Status,
 		))
 	}
