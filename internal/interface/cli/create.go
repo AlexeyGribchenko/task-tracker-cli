@@ -47,7 +47,7 @@ func (a *App) Create(args []string) error {
 		return ErrCreateFailed
 	}
 
-	fmt.Println("Task succsessfuly created: " + task.Name)
+	fmt.Println(a.colorer.Green("Task succsessfuly created: " + task.Name))
 
 	return nil
 }

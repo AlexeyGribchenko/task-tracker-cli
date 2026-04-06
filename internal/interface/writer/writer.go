@@ -1,4 +1,4 @@
-package cli
+package writer
 
 import (
 	"fmt"
@@ -6,17 +6,11 @@ import (
 	"text/tabwriter"
 )
 
-type Config struct {
-	MinWidth int `env:"FORMAT_MIN_WIDTH"`
-	TabWidth int `env:"FORMAT_TAB_WIDTH"`
-	Padding  int `env:"FORMAT_PADDING"`
-}
-
 type CLIWriter struct {
 	writer *tabwriter.Writer
 }
 
-func NewWriter(cfg Config) *CLIWriter {
+func New(cfg Config) *CLIWriter {
 	wr := tabwriter.NewWriter(
 		os.Stdout,
 		cfg.MinWidth,

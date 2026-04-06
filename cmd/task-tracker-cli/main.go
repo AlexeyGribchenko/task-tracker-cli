@@ -7,6 +7,8 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/config"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/infrastructure/repository/sqlite"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/colors"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
 )
 
@@ -30,9 +32,10 @@ func main() {
 	createUC := usecase.NewCreateTaskUseCase(db)
 	updateUC := usecase.NewUpdateTaskUseCase(db)
 
-	writer := cli.NewWriter(cfg.Format)
+	writer := writer.New(cfg.Format)
+	colorer := colors.New(cfg.Color)
 
-	app := cli.New(createUC, getUC, updateUC, writer)
+	app := cli.New(createUC, getUC, updateUC, writer, colorer)
 
 	if err := app.Run(); err != nil {
 		fmt.Println("Error: ", err)

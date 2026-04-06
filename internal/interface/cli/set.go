@@ -36,7 +36,7 @@ func (a *App) Set(args []string) error {
 		return ErrStatusUpdateFailed
 	}
 
-	fmt.Println("Task status successuly updated!")
+	fmt.Println(a.colorer.Green("Task status successuly updated!"))
 
 	return nil
 }
