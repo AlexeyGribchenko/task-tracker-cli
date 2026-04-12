@@ -4,9 +4,9 @@ import (
 	"errors"
 	"os"
 
-	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/colors"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
+	"github.com/fatih/color"
 )
 
 var (
@@ -27,7 +27,6 @@ type App struct {
 	getAllUC usecase.GetTasksUseCase
 	updateUC usecase.UpdateTaskStatusUseCase
 	writer   *writer.CLIWriter
-	colorer  colors.Colorer
 }
 
 func New(
@@ -35,14 +34,12 @@ func New(
 	guc usecase.GetTasksUseCase,
 	uuc usecase.UpdateTaskStatusUseCase,
 	wr *writer.CLIWriter,
-	c colors.Colorer,
 ) *App {
 	return &App{
 		createUC: cuc,
 		getAllUC: guc,
 		updateUC: uuc,
 		writer:   wr,
-		colorer:  c,
 	}
 }
 
@@ -65,6 +62,6 @@ func (a *App) Run() error {
 	case CommandSetTaskStatus:
 		return a.Set(args)
 	default:
-		return errors.New("Invalid command: " + command)
+		return errors.New("Invalid command: " + color.New(color.Bold).Sprint(command))
 	}
 }

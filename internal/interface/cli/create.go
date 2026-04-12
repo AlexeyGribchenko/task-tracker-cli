@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
+	"github.com/fatih/color"
 )
 
 var (
@@ -47,7 +48,7 @@ func (a *App) Create(args []string) error {
 		return ErrCreateFailed
 	}
 
-	fmt.Println(a.colorer.Green("Task succsessfuly created: " + task.Name))
+	fmt.Println(color.GreenString("Task succsessfuly created: " + task.Name))
 
 	return nil
 }

@@ -7,6 +7,7 @@ import (
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
+	"github.com/fatih/color"
 )
 
 var (
@@ -36,7 +37,7 @@ func (a *App) Set(args []string) error {
 		return ErrStatusUpdateFailed
 	}
 
-	fmt.Println(a.colorer.Green("Task status successuly updated!"))
+	fmt.Println(color.GreenString("Task status successuly updated!"))
 
 	return nil
 }

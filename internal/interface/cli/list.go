@@ -55,13 +55,13 @@ func (a *App) List(args []string) error {
 
 		switch status {
 		case domain.TaskStatusCreated:
-			statusStr = a.colorer.Blue(statusStr)
+			statusStr = color.BlueString(statusStr)
 		case domain.TaskStatusInProgress:
-			statusStr = a.colorer.Yellow(statusStr)
+			statusStr = color.YellowString(statusStr)
 		case domain.TaskStatusCompleted:
-			statusStr = a.colorer.Green(statusStr)
+			statusStr = color.GreenString(statusStr)
 		case domain.TaskStatusCancelled:
-			statusStr = a.colorer.Red(statusStr)
+			statusStr = color.RedString(statusStr)
 		}
 
 		row := []string{

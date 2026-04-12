@@ -10,6 +10,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/colors"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
+	"github.com/fatih/color"
 )
 
 const configPath = ".env"
@@ -23,6 +24,8 @@ func main() {
 
 	cfg := config.ParseConfig(configPath)
 
+	colors.Init(cfg.Color)
+
 	db, err := sqlite.New(cfg.Sqlite)
 	if err != nil {
 		panic("failed to initialize db: " + err.Error())
@@ -32,13 +35,13 @@ func main() {
 	createUC := usecase.NewCreateTaskUseCase(db)
 	updateUC := usecase.NewUpdateTaskUseCase(db)
 
+	// TODO: change to tablewriter
 	writer := writer.New(cfg.Format)
-	colorer := colors.New(cfg.Color)
 
-	app := cli.New(createUC, getUC, updateUC, writer, colorer)
+	app := cli.New(createUC, getUC, updateUC, writer)
 
 	if err := app.Run(); err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println(color.RedString("Error:"), err)
 		os.Exit(1)
 	}
 	os.Exit(0)
