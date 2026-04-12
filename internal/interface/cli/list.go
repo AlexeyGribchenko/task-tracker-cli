@@ -35,9 +35,17 @@ func (a *App) List(args []string) error {
 	colorConfig := renderer.ColorizedConfig{
 		Header: renderer.Tint{
 			FG: renderer.Colors{color.Bold},
+			BG: renderer.Colors{color.ResetBlinking},
 		},
 		Column: renderer.Tint{
-			FG: renderer.Colors{color.FgWhite},
+			FG: renderer.Colors{color.FgHiWhite},
+		},
+		// It just fixes bug with rendering on linux
+		Border: renderer.Tint{
+			BG: renderer.Colors{color.ResetBlinking},
+		},
+		Separator: renderer.Tint{
+			BG: renderer.Colors{color.ResetBlinking},
 		},
 	}
 
@@ -45,8 +53,10 @@ func (a *App) List(args []string) error {
 		tablewriter.WithRenderer(renderer.NewColorized(colorConfig)),
 		tablewriter.WithRowMaxWidth(maxColumnWidth),
 	)
+	defer table.Render()
+
 	// TODO: make it configurable
-	table.Header("ID", "Task name", "Description", "Created", "Updated", "Status")
+	table.Header([]string{"ID", "Task name", "description", "Created", "Updated", "Status"})
 
 	for _, task := range tasks {
 		status := task.Status
@@ -55,13 +65,13 @@ func (a *App) List(args []string) error {
 
 		switch status {
 		case domain.TaskStatusCreated:
-			statusStr = color.BlueString(statusStr)
+			statusStr = color.HiBlueString(statusStr)
 		case domain.TaskStatusInProgress:
-			statusStr = color.YellowString(statusStr)
+			statusStr = color.HiYellowString(statusStr)
 		case domain.TaskStatusCompleted:
-			statusStr = color.GreenString(statusStr)
+			statusStr = color.HiGreenString(statusStr)
 		case domain.TaskStatusCancelled:
-			statusStr = color.RedString(statusStr)
+			statusStr = color.HiRedString(statusStr)
 		}
 
 		row := []string{
@@ -72,9 +82,9 @@ func (a *App) List(args []string) error {
 			task.UpdatedAt.Format("15:04 02.01"),
 			statusStr,
 		}
+
 		table.Append(row)
 	}
-	table.Render()
 
 	return nil
 }
