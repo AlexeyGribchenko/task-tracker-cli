@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 
+	// "github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
 	"github.com/fatih/color"
@@ -26,14 +27,14 @@ type App struct {
 	createUC usecase.CreateTaskUseCase
 	getAllUC usecase.GetTasksUseCase
 	updateUC usecase.UpdateTaskStatusUseCase
-	writer   *writer.CLIWriter
+	writer   *writer.TableWriter
 }
 
 func New(
 	cuc usecase.CreateTaskUseCase,
 	guc usecase.GetTasksUseCase,
 	uuc usecase.UpdateTaskStatusUseCase,
-	wr *writer.CLIWriter,
+	wr *writer.TableWriter,
 ) *App {
 	return &App{
 		createUC: cuc,

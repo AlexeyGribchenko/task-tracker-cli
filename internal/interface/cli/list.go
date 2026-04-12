@@ -3,21 +3,14 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/utils"
 	"github.com/fatih/color"
-	"github.com/olekukonko/tablewriter"
-	"github.com/olekukonko/tablewriter/renderer"
 )
 
 var (
 	ErrGetTasksFailed = errors.New("Failed to get list of tasks")
-)
-
-const (
-	maxColumnWidth = 50
 )
 
 func (a *App) List(args []string) error {
@@ -32,21 +25,31 @@ func (a *App) List(args []string) error {
 		return nil
 	}
 
-	colorConfig := renderer.ColorizedConfig{
-		Header: renderer.Tint{
-			FG: renderer.Colors{color.Bold},
-		},
-		Column: renderer.Tint{
-			FG: renderer.Colors{color.FgWhite},
-		},
-	}
+	// colorConfig := renderer.ColorizedConfig{
+	// 	Header: renderer.Tint{
+	// 		FG: renderer.Colors{color.Bold},
+	// 		BG: renderer.Colors{color.ResetBlinking},
+	// 	},
+	// 	Column: renderer.Tint{
+	// 		FG: renderer.Colors{color.FgHiWhite},
+	// 	},
+	// 	// It just fixes bug with rendering on linux
+	// 	Border: renderer.Tint{
+	// 		BG: renderer.Colors{color.ResetBlinking},
+	// 	},
+	// 	Separator: renderer.Tint{
+	// 		BG: renderer.Colors{color.ResetBlinking},
+	// 	},
+	// }
 
-	table := tablewriter.NewTable(os.Stdout,
-		tablewriter.WithRenderer(renderer.NewColorized(colorConfig)),
-		tablewriter.WithRowMaxWidth(maxColumnWidth),
-	)
-	// TODO: make it configurable
-	table.Header("ID", "Task name", "Description", "Created", "Updated", "Status")
+	// table := tablewriter.NewTable(os.Stdout,
+	// 	tablewriter.WithRenderer(renderer.NewColorized(colorConfig)),
+	// 	tablewriter.WithRowMaxWidth(maxColumnWidth),
+	// )
+	// defer table.Render()
+
+	// // TODO: make it configurable
+	// table.Header([]string{"ID", "Task name", "description", "Created", "Updated", "Status"})
 
 	for _, task := range tasks {
 		status := task.Status
@@ -55,13 +58,13 @@ func (a *App) List(args []string) error {
 
 		switch status {
 		case domain.TaskStatusCreated:
-			statusStr = color.BlueString(statusStr)
+			statusStr = color.HiBlueString(statusStr)
 		case domain.TaskStatusInProgress:
-			statusStr = color.YellowString(statusStr)
+			statusStr = color.HiYellowString(statusStr)
 		case domain.TaskStatusCompleted:
-			statusStr = color.GreenString(statusStr)
+			statusStr = color.HiGreenString(statusStr)
 		case domain.TaskStatusCancelled:
-			statusStr = color.RedString(statusStr)
+			statusStr = color.HiRedString(statusStr)
 		}
 
 		row := []string{
@@ -72,9 +75,10 @@ func (a *App) List(args []string) error {
 			task.UpdatedAt.Format("15:04 02.01"),
 			statusStr,
 		}
-		table.Append(row)
-	}
-	table.Render()
 
-	return nil
+		a.writer.AddRow(row)
+		// table.Append(row)
+	}
+
+	return a.writer.Render()
 }
