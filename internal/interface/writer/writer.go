@@ -10,13 +10,17 @@ import (
 )
 
 const (
-	validDescriptionName = "description"
-	validCreatedName     = "created"
-	validUpdatedName     = "updated"
+	ValidIdName          = "id"
+	ValidTaskNameName    = "name"
+	ValidDescriptionName = "description"
+	ValidCreatedName     = "created"
+	ValidUpdatedName     = "updated"
+	ValidStatusName      = "status"
 )
 
 type TableWriter struct {
-	writer *tablewriter.Table
+	writer       *tablewriter.Table
+	HeaderFields []string
 }
 
 func New(cfg Config) *TableWriter {
@@ -43,22 +47,23 @@ func New(cfg Config) *TableWriter {
 		tablewriter.WithRowMaxWidth(cfg.MaxColumnWidth),
 	)
 
-	headers := []string{"id", "task name", "status"}
+	headers := []string{ValidIdName, ValidTaskNameName}
 	for _, name := range cfg.ExtraColumns {
 		name = strings.ToLower(name)
 		if isColumnNameValid(name) {
 			headers = append(headers, name)
 		}
 	}
+	headers = append(headers, ValidStatusName)
 
 	table.Header(headers)
 
-	return &TableWriter{table}
+	return &TableWriter{table, headers}
 }
 
 func isColumnNameValid(name string) bool {
 	switch name {
-	case validDescriptionName, validCreatedName, validUpdatedName:
+	case ValidIdName, ValidTaskNameName, ValidDescriptionName, ValidCreatedName, ValidUpdatedName, ValidStatusName:
 		return true
 	}
 	return false

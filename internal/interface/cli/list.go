@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/utils"
 	"github.com/fatih/color"
 )
@@ -25,32 +26,6 @@ func (a *App) List(args []string) error {
 		return nil
 	}
 
-	// colorConfig := renderer.ColorizedConfig{
-	// 	Header: renderer.Tint{
-	// 		FG: renderer.Colors{color.Bold},
-	// 		BG: renderer.Colors{color.ResetBlinking},
-	// 	},
-	// 	Column: renderer.Tint{
-	// 		FG: renderer.Colors{color.FgHiWhite},
-	// 	},
-	// 	// It just fixes bug with rendering on linux
-	// 	Border: renderer.Tint{
-	// 		BG: renderer.Colors{color.ResetBlinking},
-	// 	},
-	// 	Separator: renderer.Tint{
-	// 		BG: renderer.Colors{color.ResetBlinking},
-	// 	},
-	// }
-
-	// table := tablewriter.NewTable(os.Stdout,
-	// 	tablewriter.WithRenderer(renderer.NewColorized(colorConfig)),
-	// 	tablewriter.WithRowMaxWidth(maxColumnWidth),
-	// )
-	// defer table.Render()
-
-	// // TODO: make it configurable
-	// table.Header([]string{"ID", "Task name", "description", "Created", "Updated", "Status"})
-
 	for _, task := range tasks {
 		status := task.Status
 
@@ -67,17 +42,25 @@ func (a *App) List(args []string) error {
 			statusStr = color.HiRedString(statusStr)
 		}
 
-		row := []string{
-			fmt.Sprintf("%d", task.ID),
-			task.Name,
-			utils.ValueFromPointer(task.Description),
-			task.CreatedAt.Format("15:04 02.01"),
-			task.UpdatedAt.Format("15:04 02.01"),
-			statusStr,
+		row := make([]string, 0, 6)
+		for _, field := range a.writer.HeaderFields {
+			switch field {
+			case writer.ValidIdName:
+				row = append(row, fmt.Sprintf("%d", task.ID))
+			case writer.ValidTaskNameName:
+				row = append(row, task.Name)
+			case writer.ValidDescriptionName:
+				row = append(row, utils.ValueFromPointer(task.Description))
+			case writer.ValidUpdatedName:
+				row = append(row, task.UpdatedAt.Format("15:04 02.01"))
+			case writer.ValidCreatedName:
+				row = append(row, task.CreatedAt.Format("15:04 02.01"))
+			case writer.ValidStatusName:
+				row = append(row, statusStr)
+			}
 		}
 
 		a.writer.AddRow(row)
-		// table.Append(row)
 	}
 
 	return a.writer.Render()

@@ -23,7 +23,6 @@ const configPath = ".env"
 func main() {
 
 	cfg := config.ParseConfig(configPath)
-	fmt.Println(cfg)
 
 	colors.Init(cfg.Color)
 
