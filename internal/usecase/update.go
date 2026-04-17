@@ -15,16 +15,14 @@ var (
 )
 
 type UpdateTaskStatusUseCaseImpl struct {
-	db TaskRepository
+	db TaskUpdater
 }
 
-func NewUpdateTaskUseCase(db TaskRepository) *UpdateTaskStatusUseCaseImpl {
+func NewUpdateTaskUseCase(db TaskUpdater) UpdateTaskStatusUseCase {
 	return &UpdateTaskStatusUseCaseImpl{
 		db: db,
 	}
 }
-
-var _ UpdateTaskStatusUseCase = (*UpdateTaskStatusUseCaseImpl)(nil)
 
 func (uc *UpdateTaskStatusUseCaseImpl) Execute(input dto.UpdateTask) error {
 

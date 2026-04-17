@@ -8,16 +8,14 @@ import (
 )
 
 type CreateTaskUseCaseImpl struct {
-	db TaskRepository
+	db TaskCreator
 }
 
-func NewCreateTaskUseCase(db TaskRepository) *CreateTaskUseCaseImpl {
+func NewCreateTaskUseCase(db TaskCreator) CreateTaskUseCase {
 	return &CreateTaskUseCaseImpl{
 		db: db,
 	}
 }
-
-var _ CreateTaskUseCase = (*CreateTaskUseCaseImpl)(nil)
 
 func (uc *CreateTaskUseCaseImpl) Execute(input dto.CreateTask) (*domain.Task, error) {
 	const op = "usecase.create.Execute"

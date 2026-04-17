@@ -9,3 +9,7 @@ type UpdateTask struct {
 	ID     int
 	Status string
 }
+
+type RemoveTask struct {
+	ID int
+}

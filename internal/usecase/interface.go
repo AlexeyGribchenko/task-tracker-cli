@@ -13,6 +13,22 @@ type TaskRepository interface {
 	UpdateTaskStatus(id int, status domain.TaskStatus) error
 }
 
+type TaskCreator interface {
+	CreateTask(task domain.Task) (*domain.Task, error)
+}
+
+type TaskUpdater interface {
+	UpdateTaskStatus(id int, status domain.TaskStatus) error
+}
+
+type TaskGetter interface {
+	GetTasks() ([]domain.Task, error)
+}
+
+type TaskRemover interface {
+	RemoveTask(id int) error
+}
+
 type GetTasksUseCase interface {
 	Execute() ([]domain.Task, error)
 }
@@ -23,4 +39,8 @@ type CreateTaskUseCase interface {
 
 type UpdateTaskStatusUseCase interface {
 	Execute(input dto.UpdateTask) error
+}
+
+type RemoveTaskUseCase interface {
+	Execute(input dto.RemoveTask) error
 }

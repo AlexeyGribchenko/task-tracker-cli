@@ -34,11 +34,12 @@ func main() {
 	getUC := usecase.NewGetTasksUseCase(db)
 	createUC := usecase.NewCreateTaskUseCase(db)
 	updateUC := usecase.NewUpdateTaskUseCase(db)
+	removeUC := usecase.NewRemoveTaskUseCase(db)
 
 	// TODO: change to tablewriter
 	writer := writer.New(cfg.Format)
 
-	app := cli.New(createUC, getUC, updateUC, writer)
+	app := cli.New(createUC, getUC, updateUC, removeUC, writer)
 
 	if err := app.Run(); err != nil {
 		fmt.Println(color.RedString("Error:"), err)

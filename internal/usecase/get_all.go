@@ -6,19 +6,17 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
 )
 
-type GetTaskUseCaseImpl struct {
-	db TaskRepository
+type GetTasksUseCaseImpl struct {
+	db TaskGetter
 }
 
-func NewGetTasksUseCase(db TaskRepository) *GetTaskUseCaseImpl {
-	return &GetTaskUseCaseImpl{
+func NewGetTasksUseCase(db TaskGetter) GetTasksUseCase {
+	return &GetTasksUseCaseImpl{
 		db: db,
 	}
 }
 
-var _ GetTasksUseCase = (*GetTaskUseCaseImpl)(nil)
-
-func (uc *GetTaskUseCaseImpl) Execute() ([]domain.Task, error) {
+func (uc *GetTasksUseCaseImpl) Execute() ([]domain.Task, error) {
 
 	tasks, err := uc.db.GetTasks()
 	if err != nil {
