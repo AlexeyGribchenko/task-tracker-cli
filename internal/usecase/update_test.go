@@ -12,7 +12,7 @@ import (
 )
 
 func TestUpdateUseCase(t *testing.T) {
-	type mockBehaviour func(s *mocks.MockTaskRepository, input dto.UpdateTask)
+	type mockBehaviour func(s *mocks.MockTaskUpdater, input dto.UpdateTask)
 
 	testCases := []struct {
 		name          string
@@ -25,7 +25,7 @@ func TestUpdateUseCase(t *testing.T) {
 		{
 			name:  "OK - valid input: in_progress status",
 			input: dto.UpdateTask{ID: 1, Status: "in_progress"},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input dto.UpdateTask) {
+			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
 				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusInProgress).Return(nil)
 			},
 			errorExpected: false,
@@ -33,7 +33,7 @@ func TestUpdateUseCase(t *testing.T) {
 		{
 			name:  "OK - valid input: completed status",
 			input: dto.UpdateTask{ID: 1, Status: "completed"},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input dto.UpdateTask) {
+			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
 				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusCompleted).Return(nil)
 			},
 			errorExpected: false,
@@ -41,7 +41,7 @@ func TestUpdateUseCase(t *testing.T) {
 		{
 			name:  "OK - valid input: canceled status",
 			input: dto.UpdateTask{ID: 1, Status: "cancelled"},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input dto.UpdateTask) {
+			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
 				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusCancelled).Return(nil)
 			},
 			errorExpected: false,
@@ -49,7 +49,7 @@ func TestUpdateUseCase(t *testing.T) {
 		{
 			name:          "Error - invalid input: wrong ID",
 			input:         dto.UpdateTask{ID: -1, Status: "in_progress"},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input dto.UpdateTask) {},
+			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {},
 			errorExpected: true,
 			errorIs:       true,
 			expectedError: ErrInvalidTaskID,
@@ -57,7 +57,7 @@ func TestUpdateUseCase(t *testing.T) {
 		{
 			name:          "Error - invalid input: wrong task status",
 			input:         dto.UpdateTask{ID: 1, Status: "wrong status"},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input dto.UpdateTask) {},
+			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {},
 			errorExpected: true,
 			errorIs:       true,
 			expectedError: ErrInvalidTaskStatus,
@@ -65,7 +65,7 @@ func TestUpdateUseCase(t *testing.T) {
 		{
 			name:  "Error - database error",
 			input: dto.UpdateTask{ID: 1, Status: "in_progress"},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input dto.UpdateTask) {
+			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
 				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusInProgress).
 					Return(errors.New("database"))
 			},
@@ -79,7 +79,7 @@ func TestUpdateUseCase(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			c := gomock.NewController(t)
 
-			repo := mocks.NewMockTaskRepository(c)
+			repo := mocks.NewMockTaskUpdater(c)
 
 			updateUC := NewUpdateTaskUseCase(repo)
 

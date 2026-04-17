@@ -38,7 +38,7 @@ func (t taskMatcher) String() string {
 }
 
 func TestCreate(t *testing.T) {
-	type mockBehaviour func(s *mocks.MockTaskRepository, input domain.Task)
+	type mockBehaviour func(s *mocks.MockTaskCreator, input domain.Task)
 
 	var (
 		ptrDescription = utils.PointerFromValue("description")
@@ -66,7 +66,7 @@ func TestCreate(t *testing.T) {
 				UpdatedAt:   updatedAt,
 				CreatedAt:   createdAt,
 			},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input domain.Task) {
+			mockBehaviour: func(s *mocks.MockTaskCreator, input domain.Task) {
 				s.EXPECT().CreateTask(taskMatcher{expected: input}).Return(
 					&domain.Task{
 						ID:          1,
@@ -98,7 +98,7 @@ func TestCreate(t *testing.T) {
 				UpdatedAt:   updatedAt,
 				CreatedAt:   createdAt,
 			},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input domain.Task) {
+			mockBehaviour: func(s *mocks.MockTaskCreator, input domain.Task) {
 				s.EXPECT().CreateTask(taskMatcher{expected: input}).Return(
 					&domain.Task{
 						ID:          1,
@@ -123,7 +123,7 @@ func TestCreate(t *testing.T) {
 		{
 			name:          "Error - empty name",
 			input:         dto.CreateTask{Name: "", Description: nil},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input domain.Task) {},
+			mockBehaviour: func(s *mocks.MockTaskCreator, input domain.Task) {},
 			errorExpected: true,
 			errorIs:       true,
 			expectedError: domain.ErrInvalidTaskName,
@@ -138,7 +138,7 @@ func TestCreate(t *testing.T) {
 				UpdatedAt:   updatedAt,
 				CreatedAt:   createdAt,
 			},
-			mockBehaviour: func(s *mocks.MockTaskRepository, input domain.Task) {
+			mockBehaviour: func(s *mocks.MockTaskCreator, input domain.Task) {
 				s.EXPECT().CreateTask(taskMatcher{expected: input}).Return(nil, errors.New("database connection error"))
 			},
 			errorExpected: true,
@@ -150,7 +150,7 @@ func TestCreate(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			c := gomock.NewController(t)
 
-			mockRepo := mocks.NewMockTaskRepository(c)
+			mockRepo := mocks.NewMockTaskCreator(c)
 
 			tc.mockBehaviour(mockRepo, tc.inputDB)
 

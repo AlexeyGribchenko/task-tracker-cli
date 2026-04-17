@@ -12,31 +12,31 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// MockTaskRepository is a mock of TaskRepository interface.
-type MockTaskRepository struct {
+// MockTaskCreator is a mock of TaskCreator interface.
+type MockTaskCreator struct {
 	ctrl     *gomock.Controller
-	recorder *MockTaskRepositoryMockRecorder
+	recorder *MockTaskCreatorMockRecorder
 }
 
-// MockTaskRepositoryMockRecorder is the mock recorder for MockTaskRepository.
-type MockTaskRepositoryMockRecorder struct {
-	mock *MockTaskRepository
+// MockTaskCreatorMockRecorder is the mock recorder for MockTaskCreator.
+type MockTaskCreatorMockRecorder struct {
+	mock *MockTaskCreator
 }
 
-// NewMockTaskRepository creates a new mock instance.
-func NewMockTaskRepository(ctrl *gomock.Controller) *MockTaskRepository {
-	mock := &MockTaskRepository{ctrl: ctrl}
-	mock.recorder = &MockTaskRepositoryMockRecorder{mock}
+// NewMockTaskCreator creates a new mock instance.
+func NewMockTaskCreator(ctrl *gomock.Controller) *MockTaskCreator {
+	mock := &MockTaskCreator{ctrl: ctrl}
+	mock.recorder = &MockTaskCreatorMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockTaskRepository) EXPECT() *MockTaskRepositoryMockRecorder {
+func (m *MockTaskCreator) EXPECT() *MockTaskCreatorMockRecorder {
 	return m.recorder
 }
 
 // CreateTask mocks base method.
-func (m *MockTaskRepository) CreateTask(task domain.Task) (*domain.Task, error) {
+func (m *MockTaskCreator) CreateTask(task domain.Task) (*domain.Task, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateTask", task)
 	ret0, _ := ret[0].(*domain.Task)
@@ -45,13 +45,73 @@ func (m *MockTaskRepository) CreateTask(task domain.Task) (*domain.Task, error) 
 }
 
 // CreateTask indicates an expected call of CreateTask.
-func (mr *MockTaskRepositoryMockRecorder) CreateTask(task interface{}) *gomock.Call {
+func (mr *MockTaskCreatorMockRecorder) CreateTask(task interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTask", reflect.TypeOf((*MockTaskRepository)(nil).CreateTask), task)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTask", reflect.TypeOf((*MockTaskCreator)(nil).CreateTask), task)
+}
+
+// MockTaskUpdater is a mock of TaskUpdater interface.
+type MockTaskUpdater struct {
+	ctrl     *gomock.Controller
+	recorder *MockTaskUpdaterMockRecorder
+}
+
+// MockTaskUpdaterMockRecorder is the mock recorder for MockTaskUpdater.
+type MockTaskUpdaterMockRecorder struct {
+	mock *MockTaskUpdater
+}
+
+// NewMockTaskUpdater creates a new mock instance.
+func NewMockTaskUpdater(ctrl *gomock.Controller) *MockTaskUpdater {
+	mock := &MockTaskUpdater{ctrl: ctrl}
+	mock.recorder = &MockTaskUpdaterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTaskUpdater) EXPECT() *MockTaskUpdaterMockRecorder {
+	return m.recorder
+}
+
+// UpdateTaskStatus mocks base method.
+func (m *MockTaskUpdater) UpdateTaskStatus(id int, status domain.TaskStatus) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateTaskStatus", id, status)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateTaskStatus indicates an expected call of UpdateTaskStatus.
+func (mr *MockTaskUpdaterMockRecorder) UpdateTaskStatus(id, status interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTaskStatus", reflect.TypeOf((*MockTaskUpdater)(nil).UpdateTaskStatus), id, status)
+}
+
+// MockTaskGetter is a mock of TaskGetter interface.
+type MockTaskGetter struct {
+	ctrl     *gomock.Controller
+	recorder *MockTaskGetterMockRecorder
+}
+
+// MockTaskGetterMockRecorder is the mock recorder for MockTaskGetter.
+type MockTaskGetterMockRecorder struct {
+	mock *MockTaskGetter
+}
+
+// NewMockTaskGetter creates a new mock instance.
+func NewMockTaskGetter(ctrl *gomock.Controller) *MockTaskGetter {
+	mock := &MockTaskGetter{ctrl: ctrl}
+	mock.recorder = &MockTaskGetterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTaskGetter) EXPECT() *MockTaskGetterMockRecorder {
+	return m.recorder
 }
 
 // GetTasks mocks base method.
-func (m *MockTaskRepository) GetTasks() ([]domain.Task, error) {
+func (m *MockTaskGetter) GetTasks() ([]domain.Task, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTasks")
 	ret0, _ := ret[0].([]domain.Task)
@@ -60,23 +120,46 @@ func (m *MockTaskRepository) GetTasks() ([]domain.Task, error) {
 }
 
 // GetTasks indicates an expected call of GetTasks.
-func (mr *MockTaskRepositoryMockRecorder) GetTasks() *gomock.Call {
+func (mr *MockTaskGetterMockRecorder) GetTasks() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTasks", reflect.TypeOf((*MockTaskRepository)(nil).GetTasks))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTasks", reflect.TypeOf((*MockTaskGetter)(nil).GetTasks))
 }
 
-// UpdateTaskStatus mocks base method.
-func (m *MockTaskRepository) UpdateTaskStatus(id int, status domain.TaskStatus) error {
+// MockTaskRemover is a mock of TaskRemover interface.
+type MockTaskRemover struct {
+	ctrl     *gomock.Controller
+	recorder *MockTaskRemoverMockRecorder
+}
+
+// MockTaskRemoverMockRecorder is the mock recorder for MockTaskRemover.
+type MockTaskRemoverMockRecorder struct {
+	mock *MockTaskRemover
+}
+
+// NewMockTaskRemover creates a new mock instance.
+func NewMockTaskRemover(ctrl *gomock.Controller) *MockTaskRemover {
+	mock := &MockTaskRemover{ctrl: ctrl}
+	mock.recorder = &MockTaskRemoverMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTaskRemover) EXPECT() *MockTaskRemoverMockRecorder {
+	return m.recorder
+}
+
+// RemoveTask mocks base method.
+func (m *MockTaskRemover) RemoveTask(id int) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateTaskStatus", id, status)
+	ret := m.ctrl.Call(m, "RemoveTask", id)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateTaskStatus indicates an expected call of UpdateTaskStatus.
-func (mr *MockTaskRepositoryMockRecorder) UpdateTaskStatus(id, status interface{}) *gomock.Call {
+// RemoveTask indicates an expected call of RemoveTask.
+func (mr *MockTaskRemoverMockRecorder) RemoveTask(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTaskStatus", reflect.TypeOf((*MockTaskRepository)(nil).UpdateTaskStatus), id, status)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveTask", reflect.TypeOf((*MockTaskRemover)(nil).RemoveTask), id)
 }
 
 // MockGetTasksUseCase is a mock of GetTasksUseCase interface.
@@ -190,4 +273,41 @@ func (m *MockUpdateTaskStatusUseCase) Execute(input dto.UpdateTask) error {
 func (mr *MockUpdateTaskStatusUseCaseMockRecorder) Execute(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockUpdateTaskStatusUseCase)(nil).Execute), input)
+}
+
+// MockRemoveTaskUseCase is a mock of RemoveTaskUseCase interface.
+type MockRemoveTaskUseCase struct {
+	ctrl     *gomock.Controller
+	recorder *MockRemoveTaskUseCaseMockRecorder
+}
+
+// MockRemoveTaskUseCaseMockRecorder is the mock recorder for MockRemoveTaskUseCase.
+type MockRemoveTaskUseCaseMockRecorder struct {
+	mock *MockRemoveTaskUseCase
+}
+
+// NewMockRemoveTaskUseCase creates a new mock instance.
+func NewMockRemoveTaskUseCase(ctrl *gomock.Controller) *MockRemoveTaskUseCase {
+	mock := &MockRemoveTaskUseCase{ctrl: ctrl}
+	mock.recorder = &MockRemoveTaskUseCaseMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRemoveTaskUseCase) EXPECT() *MockRemoveTaskUseCaseMockRecorder {
+	return m.recorder
+}
+
+// Execute mocks base method.
+func (m *MockRemoveTaskUseCase) Execute(input dto.RemoveTask) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Execute", input)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Execute indicates an expected call of Execute.
+func (mr *MockRemoveTaskUseCaseMockRecorder) Execute(input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockRemoveTaskUseCase)(nil).Execute), input)
 }

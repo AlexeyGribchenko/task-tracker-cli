@@ -12,7 +12,7 @@ import (
 )
 
 func TestGetAll(t *testing.T) {
-	type mockBehaviour func(s *mocks.MockTaskRepository)
+	type mockBehaviour func(s *mocks.MockTaskGetter)
 
 	var (
 		createdAt = time.Now().UTC()
@@ -27,7 +27,7 @@ func TestGetAll(t *testing.T) {
 	}{
 		{
 			name: "OK - not empty list",
-			mockBehaviour: func(s *mocks.MockTaskRepository) {
+			mockBehaviour: func(s *mocks.MockTaskGetter) {
 				s.EXPECT().GetTasks().Return([]domain.Task{
 					{
 						Name:        "task1",
@@ -65,7 +65,7 @@ func TestGetAll(t *testing.T) {
 		},
 		{
 			name: "OK - empty list",
-			mockBehaviour: func(s *mocks.MockTaskRepository) {
+			mockBehaviour: func(s *mocks.MockTaskGetter) {
 				s.EXPECT().GetTasks().Return([]domain.Task{}, nil)
 			},
 			errorExpected:  false,
@@ -73,7 +73,7 @@ func TestGetAll(t *testing.T) {
 		},
 		{
 			name: "Error - database error",
-			mockBehaviour: func(s *mocks.MockTaskRepository) {
+			mockBehaviour: func(s *mocks.MockTaskGetter) {
 				s.EXPECT().GetTasks().Return(nil, errors.New("database connection error"))
 			},
 			errorExpected: true,
@@ -84,7 +84,7 @@ func TestGetAll(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			c := gomock.NewController(t)
 
-			mockRepo := mocks.NewMockTaskRepository(c)
+			mockRepo := mocks.NewMockTaskGetter(c)
 			tc.mockBehaviour(mockRepo)
 
 			getUC := NewGetTasksUseCase(mockRepo)

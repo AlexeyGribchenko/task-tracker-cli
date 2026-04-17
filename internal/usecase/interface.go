@@ -7,12 +7,6 @@ import (
 
 //go:generate mockgen -source=interface.go -destination=mocks/interfaces_mock.go -package=mocks
 
-type TaskRepository interface {
-	GetTasks() ([]domain.Task, error)
-	CreateTask(task domain.Task) (*domain.Task, error)
-	UpdateTaskStatus(id int, status domain.TaskStatus) error
-}
-
 type TaskCreator interface {
 	CreateTask(task domain.Task) (*domain.Task, error)
 }
