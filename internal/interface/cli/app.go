@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/config"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
 	"github.com/fatih/color"
@@ -23,27 +24,40 @@ const (
 	CommandRemoveTask    = "rm"
 )
 
-type App struct {
-	createUC usecase.CreateTaskUseCase
-	getAllUC usecase.GetTasksUseCase
-	updateUC usecase.UpdateTaskStatusUseCase
-	removeUC usecase.RemoveTaskUseCase
-	writer   *writer.TableWriter
+type Repository interface {
+	usecase.TaskGetter
+	usecase.TaskCreator
+	usecase.TaskUpdater
+	usecase.TaskRemover
+	usecase.TaskSortedGetter
 }
 
-func New(
-	cuc usecase.CreateTaskUseCase,
-	guc usecase.GetTasksUseCase,
-	uuc usecase.UpdateTaskStatusUseCase,
-	ruc usecase.RemoveTaskUseCase,
-	wr *writer.TableWriter,
-) *App {
+type App struct {
+	createUC    usecase.CreateTaskUseCase
+	getAllUC    usecase.GetTasksUseCase
+	updateUC    usecase.UpdateTaskStatusUseCase
+	removeUC    usecase.RemoveTaskUseCase
+	getSortedUC usecase.GetTasksSortedUseCase
+	writer      *writer.TableWriter
+}
+
+func New(db Repository, cfg *config.Config) *App {
+
+	getUC := usecase.NewGetTasksUseCase(db)
+	createUC := usecase.NewCreateTaskUseCase(db)
+	updateUC := usecase.NewUpdateTaskUseCase(db)
+	removeUC := usecase.NewRemoveTaskUseCase(db)
+	getSortedUC := usecase.NewGetTasksSorted(db)
+
+	writer := writer.New(cfg.Format)
+
 	return &App{
-		createUC: cuc,
-		getAllUC: guc,
-		updateUC: uuc,
-		removeUC: ruc,
-		writer:   wr,
+		createUC:    createUC,
+		getAllUC:    getUC,
+		updateUC:    updateUC,
+		removeUC:    removeUC,
+		getSortedUC: getSortedUC,
+		writer:      writer,
 	}
 }
 

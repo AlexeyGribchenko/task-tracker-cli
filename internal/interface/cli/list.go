@@ -2,9 +2,11 @@ package cli
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/utils"
 	"github.com/fatih/color"
@@ -16,9 +18,26 @@ var (
 
 func (a *App) List(args []string) error {
 
-	tasks, err := a.getAllUC.Execute()
+	newFlags := flag.NewFlagSet("list", flag.ContinueOnError)
+	var sortedColumn string
+
+	newFlags.StringVar(&sortedColumn, "s", "", "name of a column that will be sorted")
+	newFlags.Parse(args)
+
+	var tasks []domain.Task
+	var err error
+
+	if sortedColumn == "" {
+		tasks, err = a.getAllUC.Execute()
+	} else {
+		input := dto.GetTasksSorted{
+			ColumnSorted: sortedColumn,
+		}
+		tasks, err = a.getSortedUC.Execute(input)
+	}
+
 	if err != nil {
-		return ErrGetTasksFailed
+		return fmt.Errorf("%w: %w", ErrGetTasksFailed, err)
 	}
 
 	if len(tasks) == 0 {

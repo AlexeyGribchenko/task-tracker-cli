@@ -13,3 +13,12 @@ type UpdateTask struct {
 type RemoveTask struct {
 	ID int
 }
+
+type GetTasksSorted struct {
+	ColumnSorted string
+}
+
+type GetTasksFiltered struct {
+	ColumnFiltered string
+	FilterValue    string
+}

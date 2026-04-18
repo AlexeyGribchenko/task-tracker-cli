@@ -5,8 +5,9 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
 )
 
+// -- Repository --
+//
 //go:generate mockgen -source=interface.go -destination=mocks/interfaces_mock.go -package=mocks
-
 type TaskCreator interface {
 	CreateTask(task domain.Task) (*domain.Task, error)
 }
@@ -23,6 +24,16 @@ type TaskRemover interface {
 	RemoveTask(id int) error
 }
 
+type TaskSortedGetter interface {
+	GetSorted(columnName domain.ColumnName) ([]domain.Task, error)
+}
+
+type TaskFilteredGetter interface {
+	GetFiltered(columnName domain.ColumnName, filterValue string) ([]domain.Task, error)
+}
+
+// -- UseCases ---
+
 type GetTasksUseCase interface {
 	Execute() ([]domain.Task, error)
 }
@@ -37,4 +48,12 @@ type UpdateTaskStatusUseCase interface {
 
 type RemoveTaskUseCase interface {
 	Execute(input dto.RemoveTask) error
+}
+
+type GetTasksSortedUseCase interface {
+	Execute(input dto.GetTasksSorted) ([]domain.Task, error)
+}
+
+type GetTasksFilteredUseCase interface {
+	Execute(input dto.GetTasksFiltered) ([]domain.Task, error)
 }

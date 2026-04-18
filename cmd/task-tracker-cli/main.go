@@ -8,8 +8,6 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/infrastructure/repository/sqlite"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/colors"
-	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
-	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
 	"github.com/fatih/color"
 )
 
@@ -31,15 +29,7 @@ func main() {
 		panic("failed to initialize db: " + err.Error())
 	}
 
-	getUC := usecase.NewGetTasksUseCase(db)
-	createUC := usecase.NewCreateTaskUseCase(db)
-	updateUC := usecase.NewUpdateTaskUseCase(db)
-	removeUC := usecase.NewRemoveTaskUseCase(db)
-
-	// TODO: change to tablewriter
-	writer := writer.New(cfg.Format)
-
-	app := cli.New(createUC, getUC, updateUC, removeUC, writer)
+	app := cli.New(db, cfg)
 
 	if err := app.Run(); err != nil {
 		fmt.Println(color.RedString("Error:"), err)

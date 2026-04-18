@@ -22,7 +22,7 @@ func (a *App) Create(args []string) error {
 		return ErrTaskNameNotProvided
 	}
 
-	newFlags := flag.NewFlagSet("new", flag.ContinueOnError)
+	newFlags := flag.NewFlagSet("add", flag.ContinueOnError)
 	var description string
 
 	newFlags.StringVar(&description, "d", "", "description of task or special notes")
@@ -30,6 +30,8 @@ func (a *App) Create(args []string) error {
 
 	name := strings.Trim(args[0], "\"")
 	if name == "" {
+		// А должно ли оно тут быть?
+		// Или это нужно вынести в бизнес-логику? думаю да
 		return ErrInvalidTaskName
 	}
 
