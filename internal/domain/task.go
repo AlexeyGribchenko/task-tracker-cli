@@ -30,7 +30,7 @@ const (
 )
 
 type Task struct {
-	ID          int
+	ID          int // Maybe new type TaskID?
 	Name        string
 	Status      TaskStatus
 	Description *string

@@ -162,6 +162,82 @@ func (mr *MockTaskRemoverMockRecorder) RemoveTask(id interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveTask", reflect.TypeOf((*MockTaskRemover)(nil).RemoveTask), id)
 }
 
+// MockTaskSortedGetter is a mock of TaskSortedGetter interface.
+type MockTaskSortedGetter struct {
+	ctrl     *gomock.Controller
+	recorder *MockTaskSortedGetterMockRecorder
+}
+
+// MockTaskSortedGetterMockRecorder is the mock recorder for MockTaskSortedGetter.
+type MockTaskSortedGetterMockRecorder struct {
+	mock *MockTaskSortedGetter
+}
+
+// NewMockTaskSortedGetter creates a new mock instance.
+func NewMockTaskSortedGetter(ctrl *gomock.Controller) *MockTaskSortedGetter {
+	mock := &MockTaskSortedGetter{ctrl: ctrl}
+	mock.recorder = &MockTaskSortedGetterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTaskSortedGetter) EXPECT() *MockTaskSortedGetterMockRecorder {
+	return m.recorder
+}
+
+// GetSorted mocks base method.
+func (m *MockTaskSortedGetter) GetSorted(columnName domain.ColumnName) ([]domain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSorted", columnName)
+	ret0, _ := ret[0].([]domain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSorted indicates an expected call of GetSorted.
+func (mr *MockTaskSortedGetterMockRecorder) GetSorted(columnName interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSorted", reflect.TypeOf((*MockTaskSortedGetter)(nil).GetSorted), columnName)
+}
+
+// MockTaskFilteredGetter is a mock of TaskFilteredGetter interface.
+type MockTaskFilteredGetter struct {
+	ctrl     *gomock.Controller
+	recorder *MockTaskFilteredGetterMockRecorder
+}
+
+// MockTaskFilteredGetterMockRecorder is the mock recorder for MockTaskFilteredGetter.
+type MockTaskFilteredGetterMockRecorder struct {
+	mock *MockTaskFilteredGetter
+}
+
+// NewMockTaskFilteredGetter creates a new mock instance.
+func NewMockTaskFilteredGetter(ctrl *gomock.Controller) *MockTaskFilteredGetter {
+	mock := &MockTaskFilteredGetter{ctrl: ctrl}
+	mock.recorder = &MockTaskFilteredGetterMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTaskFilteredGetter) EXPECT() *MockTaskFilteredGetterMockRecorder {
+	return m.recorder
+}
+
+// GetFiltered mocks base method.
+func (m *MockTaskFilteredGetter) GetFiltered(columnName domain.ColumnName, filterValue string) ([]domain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFiltered", columnName, filterValue)
+	ret0, _ := ret[0].([]domain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFiltered indicates an expected call of GetFiltered.
+func (mr *MockTaskFilteredGetterMockRecorder) GetFiltered(columnName, filterValue interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFiltered", reflect.TypeOf((*MockTaskFilteredGetter)(nil).GetFiltered), columnName, filterValue)
+}
+
 // MockGetTasksUseCase is a mock of GetTasksUseCase interface.
 type MockGetTasksUseCase struct {
 	ctrl     *gomock.Controller
@@ -310,4 +386,80 @@ func (m *MockRemoveTaskUseCase) Execute(input dto.RemoveTask) error {
 func (mr *MockRemoveTaskUseCaseMockRecorder) Execute(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockRemoveTaskUseCase)(nil).Execute), input)
+}
+
+// MockGetTasksSortedUseCase is a mock of GetTasksSortedUseCase interface.
+type MockGetTasksSortedUseCase struct {
+	ctrl     *gomock.Controller
+	recorder *MockGetTasksSortedUseCaseMockRecorder
+}
+
+// MockGetTasksSortedUseCaseMockRecorder is the mock recorder for MockGetTasksSortedUseCase.
+type MockGetTasksSortedUseCaseMockRecorder struct {
+	mock *MockGetTasksSortedUseCase
+}
+
+// NewMockGetTasksSortedUseCase creates a new mock instance.
+func NewMockGetTasksSortedUseCase(ctrl *gomock.Controller) *MockGetTasksSortedUseCase {
+	mock := &MockGetTasksSortedUseCase{ctrl: ctrl}
+	mock.recorder = &MockGetTasksSortedUseCaseMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockGetTasksSortedUseCase) EXPECT() *MockGetTasksSortedUseCaseMockRecorder {
+	return m.recorder
+}
+
+// Execute mocks base method.
+func (m *MockGetTasksSortedUseCase) Execute(input dto.GetTasksSorted) ([]domain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Execute", input)
+	ret0, _ := ret[0].([]domain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Execute indicates an expected call of Execute.
+func (mr *MockGetTasksSortedUseCaseMockRecorder) Execute(input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockGetTasksSortedUseCase)(nil).Execute), input)
+}
+
+// MockGetTasksFilteredUseCase is a mock of GetTasksFilteredUseCase interface.
+type MockGetTasksFilteredUseCase struct {
+	ctrl     *gomock.Controller
+	recorder *MockGetTasksFilteredUseCaseMockRecorder
+}
+
+// MockGetTasksFilteredUseCaseMockRecorder is the mock recorder for MockGetTasksFilteredUseCase.
+type MockGetTasksFilteredUseCaseMockRecorder struct {
+	mock *MockGetTasksFilteredUseCase
+}
+
+// NewMockGetTasksFilteredUseCase creates a new mock instance.
+func NewMockGetTasksFilteredUseCase(ctrl *gomock.Controller) *MockGetTasksFilteredUseCase {
+	mock := &MockGetTasksFilteredUseCase{ctrl: ctrl}
+	mock.recorder = &MockGetTasksFilteredUseCaseMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockGetTasksFilteredUseCase) EXPECT() *MockGetTasksFilteredUseCaseMockRecorder {
+	return m.recorder
+}
+
+// Execute mocks base method.
+func (m *MockGetTasksFilteredUseCase) Execute(input dto.GetTasksFiltered) ([]domain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Execute", input)
+	ret0, _ := ret[0].([]domain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Execute indicates an expected call of Execute.
+func (mr *MockGetTasksFilteredUseCaseMockRecorder) Execute(input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockGetTasksFilteredUseCase)(nil).Execute), input)
 }

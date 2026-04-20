@@ -15,7 +15,7 @@ var (
 	ErrNotEnoughArguments = errors.New("not enough arguments")
 )
 
-// TODO: COMMAND set -s (status) -d (description) -n (name)
+// TODO: COMMAND ID set -s (status) -d (description) -n (name)
 // TODO: COMMAND list sort -f (name|status|created|updated), -f {status} = ()
 const (
 	CommandCreateTask    = "add"

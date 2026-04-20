@@ -76,11 +76,3 @@ func (tw *TableWriter) AddRow(row []string) {
 func (tw *TableWriter) Render() error {
 	return tw.writer.Render()
 }
-
-// func (cli *TableWriter) Print(content string) {
-// 	fmt.Fprintln(cli.writer, content)
-// }
-
-// func (cli *TableWriter) Flush() error {
-// 	return cli.writer.Flush()
-// }

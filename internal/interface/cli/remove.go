@@ -27,7 +27,7 @@ func (a *App) Remove(args []string) error {
 	err = a.removeUC.Execute(input)
 	if err != nil {
 		// тут было бы неплохо обернуть ошибку
-		return ErrDeleteTask
+		return fmt.Errorf("%w: %w", ErrDeleteTask, err)
 	}
 
 	fmt.Println(color.GreenString("Task succesfully removed!"))

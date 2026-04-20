@@ -8,12 +8,15 @@ import (
 
 const queryGetSorted = `
 	SELECT id, name, description, created_at, updated_at, status
-	FROM tasks ORDER BY "$1"
+	FROM tasks
+	ORDER BY %s
 `
 
 func (s *Storage) GetSorted(columnName domain.ColumnName) ([]domain.Task, error) {
 
-	rows, err := s.db.Query(queryGetSorted, string(columnName))
+	query := fmt.Sprintf(queryGetSorted, string(columnName))
+
+	rows, err := s.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get sorted tasks: %w", err)
 	}

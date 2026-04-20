@@ -18,16 +18,15 @@ func NewGetTasksSorted(db TaskSortedGetter) GetTasksSortedUseCase {
 }
 
 func (uc *GetTasksSortedUseCaseImpl) Execute(input dto.GetTasksSorted) ([]domain.Task, error) {
-	const op = "usecase.GetTasksSorted"
 
 	columnName, err := domain.ParseColumnName(input.ColumnSorted)
 	if err != nil {
-		return nil, fmt.Errorf("%s: failed to parse column name: %w", op, err)
+		return nil, fmt.Errorf("Failed to parse column name: %w", err)
 	}
 
 	tasks, err := uc.db.GetSorted(columnName)
 	if err != nil {
-		return nil, fmt.Errorf("%s: failed to get sorted tasks: %w", op, err)
+		return nil, fmt.Errorf("Failed to get sorted tasks: %w", err)
 	}
 
 	return tasks, nil
