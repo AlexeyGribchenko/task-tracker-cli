@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -89,7 +90,8 @@ func TestGetAll(t *testing.T) {
 
 			getUC := NewGetTasksUseCase(mockRepo)
 
-			results, err := getUC.Execute()
+			d := dto.GetTaskList{} // stub: refactor in progress
+			results, err := getUC.Execute(d)
 
 			if tc.errorExpected {
 				assert.Error(t, err)

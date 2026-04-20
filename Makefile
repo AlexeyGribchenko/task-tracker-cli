@@ -11,11 +11,13 @@ BUILD_PATH := ./cmd/task-tracker-cli/
 SCHEMA_PATH := ./scripts/schema.sql
 STORAGE_PATH := ./storage/storage.db
 
+TEST_PACKAGES := $$(go list ./... | grep -v -E 'mocks')
+
 test:
-	@go test -cover ./...
+	@go test -cover ${TEST_PACKAGES}
 
 test-cover:
-	@go test -coverprofile=cov.out ./...
+	@go test -coverprofile=cov.out ${TEST_PACKAGES}
 
 test-coverage: test-cover
 	@go tool cover -html=cov.out
