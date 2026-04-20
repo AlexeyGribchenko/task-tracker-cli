@@ -26,7 +26,6 @@ func (a *App) Remove(args []string) error {
 
 	err = a.removeUC.Execute(input)
 	if err != nil {
-		// тут было бы неплохо обернуть ошибку
 		return fmt.Errorf("%w: %w", ErrDeleteTask, err)
 	}
 

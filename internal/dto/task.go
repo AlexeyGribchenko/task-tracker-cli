@@ -14,6 +14,12 @@ type RemoveTask struct {
 	ID int
 }
 
+type GetTaskList struct {
+	Status string
+	SortBy string
+	Desc   bool
+}
+
 type GetTasksSorted struct {
 	ColumnSorted string
 }

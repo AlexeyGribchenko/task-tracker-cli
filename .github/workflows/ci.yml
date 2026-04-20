@@ -35,7 +35,7 @@ jobs:
       run: go mod download
 
     - name: Run tests
-      run: go test -v -race -coverprofile=coverage.out -covermode=atomic $$(go list ./... | grep -v -E 'mocks')
+      run: go test -v -race -coverprofile=coverage.out -covermode=atomic $(go list ./... | grep -v -E 'mocks')
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2

@@ -12,7 +12,7 @@ const queryGetSorted = `
 	ORDER BY %s
 `
 
-func (s *Storage) GetSorted(columnName domain.ColumnName) ([]domain.Task, error) {
+func (s *Storage) GetSorted(columnName domain.ColumnTitle) ([]domain.Task, error) {
 
 	query := fmt.Sprintf(queryGetSorted, string(columnName))
 

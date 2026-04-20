@@ -1,25 +1,32 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+	"strings"
+)
 
-type ColumnName string
+type ColumnTitle string
 
 const (
-	columnName        = "name"
-	columnState       = "status"
-	columnCreatedAt   = "created_at"
-	columnUpdatedAt   = "updated_at"
-	columnDescription = "description"
+	ColumnId          = "id"
+	ColumnName        = "name"
+	ColumnStatus      = "status"
+	ColumnCreatedAt   = "created_at"
+	ColumnUpdatedAt   = "updated_at"
+	ColumnDescription = "description"
 )
 
 var (
 	ErrInvalidColumnName = errors.New("Invalid column name")
 )
 
-func ParseColumnName(name string) (ColumnName, error) {
+func ParseColumnName(name string) (ColumnTitle, error) {
+
+	name = strings.ToLower(name)
+
 	switch name {
-	case columnName, columnState, columnCreatedAt, columnUpdatedAt, columnDescription:
-		return ColumnName(name), nil
+	case ColumnId, ColumnName, ColumnStatus, ColumnCreatedAt, ColumnUpdatedAt, ColumnDescription:
+		return ColumnTitle(name), nil
 	}
-	return ColumnName(""), ErrInvalidColumnName
+	return ColumnTitle(""), ErrInvalidColumnName
 }

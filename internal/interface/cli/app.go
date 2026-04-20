@@ -16,7 +16,7 @@ var (
 )
 
 // TODO: COMMAND ID set -s (status) -d (description) -n (name)
-// TODO: COMMAND list sort -f (name|status|created|updated), -f {status} = ()
+// TODO: COMMAND list -s (name|status|created|updated), -f {status}
 const (
 	CommandCreateTask    = "add"
 	CommandSetTaskStatus = "status"
@@ -47,17 +47,15 @@ func New(db Repository, cfg *config.Config) *App {
 	createUC := usecase.NewCreateTaskUseCase(db)
 	updateUC := usecase.NewUpdateTaskUseCase(db)
 	removeUC := usecase.NewRemoveTaskUseCase(db)
-	getSortedUC := usecase.NewGetTasksSorted(db)
 
 	writer := writer.New(cfg.Format)
 
 	return &App{
-		createUC:    createUC,
-		getAllUC:    getUC,
-		updateUC:    updateUC,
-		removeUC:    removeUC,
-		getSortedUC: getSortedUC,
-		writer:      writer,
+		createUC: createUC,
+		getAllUC: getUC,
+		updateUC: updateUC,
+		removeUC: removeUC,
+		writer:   writer,
 	}
 }
 

@@ -186,7 +186,7 @@ func (m *MockTaskSortedGetter) EXPECT() *MockTaskSortedGetterMockRecorder {
 }
 
 // GetSorted mocks base method.
-func (m *MockTaskSortedGetter) GetSorted(columnName domain.ColumnName) ([]domain.Task, error) {
+func (m *MockTaskSortedGetter) GetSorted(columnName domain.ColumnTitle) ([]domain.Task, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSorted", columnName)
 	ret0, _ := ret[0].([]domain.Task)
@@ -224,7 +224,7 @@ func (m *MockTaskFilteredGetter) EXPECT() *MockTaskFilteredGetterMockRecorder {
 }
 
 // GetFiltered mocks base method.
-func (m *MockTaskFilteredGetter) GetFiltered(columnName domain.ColumnName, filterValue string) ([]domain.Task, error) {
+func (m *MockTaskFilteredGetter) GetFiltered(columnName domain.ColumnTitle, filterValue string) ([]domain.Task, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetFiltered", columnName, filterValue)
 	ret0, _ := ret[0].([]domain.Task)
@@ -262,18 +262,18 @@ func (m *MockGetTasksUseCase) EXPECT() *MockGetTasksUseCaseMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockGetTasksUseCase) Execute() ([]domain.Task, error) {
+func (m *MockGetTasksUseCase) Execute(input dto.GetTaskList) ([]domain.Task, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Execute")
+	ret := m.ctrl.Call(m, "Execute", input)
 	ret0, _ := ret[0].([]domain.Task)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Execute indicates an expected call of Execute.
-func (mr *MockGetTasksUseCaseMockRecorder) Execute() *gomock.Call {
+func (mr *MockGetTasksUseCaseMockRecorder) Execute(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockGetTasksUseCase)(nil).Execute))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockGetTasksUseCase)(nil).Execute), input)
 }
 
 // MockCreateTaskUseCase is a mock of CreateTaskUseCase interface.

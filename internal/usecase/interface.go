@@ -25,17 +25,17 @@ type TaskRemover interface {
 }
 
 type TaskSortedGetter interface {
-	GetSorted(columnName domain.ColumnName) ([]domain.Task, error)
+	GetSorted(columnName domain.ColumnTitle) ([]domain.Task, error)
 }
 
 type TaskFilteredGetter interface {
-	GetFiltered(columnName domain.ColumnName, filterValue string) ([]domain.Task, error)
+	GetFiltered(columnName domain.ColumnTitle, filterValue string) ([]domain.Task, error)
 }
 
 // -- UseCases ---
 
 type GetTasksUseCase interface {
-	Execute() ([]domain.Task, error)
+	Execute(input dto.GetTaskList) ([]domain.Task, error)
 }
 
 type CreateTaskUseCase interface {

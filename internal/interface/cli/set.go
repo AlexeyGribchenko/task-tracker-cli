@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
-	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
 	"github.com/fatih/color"
 )
 
@@ -31,10 +30,7 @@ func (a *App) Set(args []string) error {
 
 	err = a.updateUC.Execute(input)
 	if err != nil {
-		if errors.Is(err, usecase.ErrInvalidTaskID) || errors.Is(err, usecase.ErrInvalidTaskStatus) {
-			return err
-		}
-		return ErrStatusUpdateFailed
+		return fmt.Errorf("%w: %w", ErrStatusUpdateFailed, err)
 	}
 
 	fmt.Println(color.GreenString("Task status successuly updated!"))

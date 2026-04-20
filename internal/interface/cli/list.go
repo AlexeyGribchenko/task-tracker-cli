@@ -19,26 +19,35 @@ var (
 func (a *App) List(args []string) error {
 
 	newFlags := flag.NewFlagSet("list", flag.ContinueOnError)
+
 	var sortedColumn string
+	var status string
+	var desc bool
 
 	newFlags.StringVar(&sortedColumn, "s", "", "name of a column that will be sorted")
+	newFlags.StringVar(&status, "f", "", "status wich is used to filter task list")
+	newFlags.BoolVar(&desc, "desc", false, "sorting order")
 	newFlags.Parse(args)
 
 	var tasks []domain.Task
 	var err error
 
-	if sortedColumn == "" {
-		tasks, err = a.getAllUC.Execute()
-	} else {
-		input := dto.GetTasksSorted{
-			ColumnSorted: sortedColumn,
-		}
-		tasks, err = a.getSortedUC.Execute(input)
+	input := dto.GetTaskList{
+		Status: status,
+		SortBy: sortedColumn,
+		Desc:   desc,
 	}
+
+	tasks, err = a.getAllUC.Execute(input)
 
 	if err != nil {
 		return fmt.Errorf("%w: %w", ErrGetTasksFailed, err)
 	}
+
+	return a.render(tasks)
+}
+
+func (a *App) render(tasks []domain.Task) error {
 
 	if len(tasks) == 0 {
 		fmt.Println("No tasks yet...")
@@ -81,6 +90,5 @@ func (a *App) List(args []string) error {
 
 		a.writer.AddRow(row)
 	}
-
 	return a.writer.Render()
 }

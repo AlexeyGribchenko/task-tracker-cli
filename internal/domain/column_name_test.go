@@ -12,49 +12,49 @@ func TestParseColumnName(t *testing.T) {
 		input          string
 		errorExpected  bool
 		expectedError  error
-		expectedResult ColumnName
+		expectedResult ColumnTitle
 	}{
 		{
 			name:           "OK - valid name: id",
 			input:          "id",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnId),
+			expectedResult: ColumnTitle(ColumnId),
 		},
 		{
 			name:           "OK - valid name: name",
 			input:          "name",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnName),
+			expectedResult: ColumnTitle(ColumnName),
 		},
 		{
 			name:           "OK - valid name: description",
 			input:          "description",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnDescription),
+			expectedResult: ColumnTitle(ColumnDescription),
 		},
 		{
 			name:           "OK - valid name: created_at",
 			input:          "created_at",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnCreatedAt),
+			expectedResult: ColumnTitle(ColumnCreatedAt),
 		},
 		{
 			name:           "OK - valid name: updated_at",
 			input:          "updated_at",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnUpdatedAt),
+			expectedResult: ColumnTitle(ColumnUpdatedAt),
 		},
 		{
 			name:           "OK - valid name: status",
 			input:          "status",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnStatus),
+			expectedResult: ColumnTitle(ColumnStatus),
 		},
 		{
 			name:           "OK - valid name: upper register",
 			input:          "Status",
 			errorExpected:  false,
-			expectedResult: ColumnName(columnStatus),
+			expectedResult: ColumnTitle(ColumnStatus),
 		},
 		{
 			name:          "Error - invalid name: invalid",

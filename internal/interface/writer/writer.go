@@ -49,7 +49,6 @@ func New(cfg Config) *TableWriter {
 
 	headers := []string{ValidIdName, ValidTaskNameName}
 	for _, name := range cfg.ExtraColumns {
-		name = strings.ToLower(name)
 		if isColumnNameValid(name) {
 			headers = append(headers, name)
 		}
@@ -62,6 +61,9 @@ func New(cfg Config) *TableWriter {
 }
 
 func isColumnNameValid(name string) bool {
+
+	name = strings.ToLower(name)
+
 	switch name {
 	case ValidIdName, ValidTaskNameName, ValidDescriptionName, ValidCreatedName, ValidUpdatedName, ValidStatusName:
 		return true
