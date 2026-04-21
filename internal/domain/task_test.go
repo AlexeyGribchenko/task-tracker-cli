@@ -17,10 +17,10 @@ func TestParseStatus(t *testing.T) {
 		expectedStatus TaskStatus
 	}{
 		{
-			name:           "OK - valid task status (in progress)",
-			input:          "in_progress",
+			name:           "OK - valid task status (active)",
+			input:          "active",
 			errorExpected:  false,
-			expectedStatus: TaskStatusInProgress,
+			expectedStatus: TaskStatusActive,
 		},
 		{
 			name:           "OK - valid task status (created)",
@@ -148,9 +148,9 @@ func TestTaskStatusString(t *testing.T) {
 		expectedOutput string
 	}{
 		{
-			name:           "OK - Status 'in_progress'",
-			status:         TaskStatusInProgress,
-			expectedOutput: "in_progress",
+			name:           "OK - Status 'active'",
+			status:         TaskStatusActive,
+			expectedOutput: "active",
 		},
 		{
 			name:           "OK - Status 'created'",

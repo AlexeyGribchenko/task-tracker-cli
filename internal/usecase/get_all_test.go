@@ -40,7 +40,7 @@ func TestGetAll(t *testing.T) {
 					{
 						Name:        "task2",
 						Description: nil,
-						Status:      domain.TaskStatusInProgress,
+						Status:      domain.TaskStatusActive,
 						CreatedAt:   createdAt,
 						UpdatedAt:   updatedAt,
 					},
@@ -58,7 +58,7 @@ func TestGetAll(t *testing.T) {
 				{
 					Name:        "task2",
 					Description: nil,
-					Status:      domain.TaskStatusInProgress,
+					Status:      domain.TaskStatusActive,
 					CreatedAt:   createdAt,
 					UpdatedAt:   updatedAt,
 				},

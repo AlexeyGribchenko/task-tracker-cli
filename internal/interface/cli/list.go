@@ -62,7 +62,7 @@ func (a *App) render(tasks []domain.Task) error {
 		switch status {
 		case domain.TaskStatusCreated:
 			statusStr = color.HiBlueString(statusStr)
-		case domain.TaskStatusInProgress:
+		case domain.TaskStatusActive:
 			statusStr = color.HiYellowString(statusStr)
 		case domain.TaskStatusCompleted:
 			statusStr = color.HiGreenString(statusStr)

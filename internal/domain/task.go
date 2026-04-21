@@ -18,15 +18,15 @@ func (t TaskStatus) String() string {
 }
 
 const (
-	StrCreated    = "created"
-	StrCompleted  = "completed"
-	StrInProgress = "in_progress"
-	StrCancelled  = "cancelled"
+	StrCreated   = "created"
+	StrCompleted = "completed"
+	StrActive    = "active"
+	StrCancelled = "cancelled"
 
-	TaskStatusCreated    TaskStatus = StrCreated
-	TaskStatusInProgress TaskStatus = StrInProgress
-	TaskStatusCompleted  TaskStatus = StrCompleted
-	TaskStatusCancelled  TaskStatus = StrCancelled
+	TaskStatusCreated   TaskStatus = StrCreated
+	TaskStatusActive    TaskStatus = StrActive
+	TaskStatusCompleted TaskStatus = StrCompleted
+	TaskStatusCancelled TaskStatus = StrCancelled
 )
 
 type Task struct {
@@ -63,8 +63,8 @@ func ParseStatus(input string) (TaskStatus, error) {
 		return TaskStatusCancelled, nil
 	case StrCompleted:
 		return TaskStatusCompleted, nil
-	case StrInProgress:
-		return TaskStatusInProgress, nil
+	case StrActive:
+		return TaskStatusActive, nil
 	default:
 		return "", ErrInvalidTaskStatus
 	}

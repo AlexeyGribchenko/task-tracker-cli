@@ -23,10 +23,10 @@ func TestUpdateUseCase(t *testing.T) {
 		expectedError error
 	}{
 		{
-			name:  "OK - valid input: in_progress status",
-			input: dto.UpdateTask{ID: 1, Status: "in_progress"},
+			name:  "OK - valid input: active status",
+			input: dto.UpdateTask{ID: 1, Status: "active"},
 			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
-				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusInProgress).Return(nil)
+				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusActive).Return(nil)
 			},
 			errorExpected: false,
 		},
@@ -48,7 +48,7 @@ func TestUpdateUseCase(t *testing.T) {
 		},
 		{
 			name:          "Error - invalid input: wrong ID",
-			input:         dto.UpdateTask{ID: -1, Status: "in_progress"},
+			input:         dto.UpdateTask{ID: -1, Status: "active"},
 			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {},
 			errorExpected: true,
 			errorIs:       true,
@@ -64,9 +64,9 @@ func TestUpdateUseCase(t *testing.T) {
 		},
 		{
 			name:  "Error - database error",
-			input: dto.UpdateTask{ID: 1, Status: "in_progress"},
+			input: dto.UpdateTask{ID: 1, Status: "active"},
 			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
-				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusInProgress).
+				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusActive).
 					Return(errors.New("database"))
 			},
 			errorExpected: true,
