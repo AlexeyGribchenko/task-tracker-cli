@@ -11,12 +11,10 @@ import (
 )
 
 var (
-	ErrInvalidCommand     = errors.New("invalid command")
-	ErrNotEnoughArguments = errors.New("not enough arguments")
+	ErrNotEnoughArguments = errors.New("Not enough arguments")
 )
 
 // TODO: COMMAND ID set -s (status) -d (description) -n (name)
-// TODO: COMMAND list -s (name|status|created|updated), -f {status}
 const (
 	CommandCreateTask    = "add"
 	CommandSetTaskStatus = "status"
@@ -33,12 +31,11 @@ type Repository interface {
 }
 
 type App struct {
-	createUC    usecase.CreateTaskUseCase
-	getAllUC    usecase.GetTasksUseCase
-	updateUC    usecase.UpdateTaskStatusUseCase
-	removeUC    usecase.RemoveTaskUseCase
-	getSortedUC usecase.GetTasksSortedUseCase
-	writer      *writer.TableWriter
+	createUC usecase.CreateTaskUseCase
+	getAllUC usecase.GetTasksUseCase
+	updateUC usecase.UpdateTaskStatusUseCase
+	removeUC usecase.RemoveTaskUseCase
+	writer   *writer.TableWriter
 }
 
 func New(db Repository, cfg *config.Config) *App {

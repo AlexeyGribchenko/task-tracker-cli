@@ -1,9 +1,9 @@
 package usecase
 
 import (
+	"cmp"
 	"fmt"
 	"slices"
-	"sort"
 
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
@@ -42,7 +42,7 @@ func (uc *GetTasksUseCaseImpl) Execute(input dto.GetTaskList) ([]domain.Task, er
 
 func (uc *GetTasksUseCaseImpl) sort(tasks []domain.Task, input dto.GetTaskList) ([]domain.Task, error) {
 
-	if input.SortBy == "" {
+	if input.SortBy == "" || input.SortBy == domain.ColumnId {
 		return tasks, nil
 	}
 
@@ -51,43 +51,31 @@ func (uc *GetTasksUseCaseImpl) sort(tasks []domain.Task, input dto.GetTaskList) 
 		return nil, fmt.Errorf("Failed to parse column name: %w", err)
 	}
 
-	switch columnName {
-	case domain.ColumnName:
-		sort.Slice(tasks, func(i, j int) bool {
-			if input.Desc {
-				return tasks[i].Name > tasks[j].Name
-			}
-			return tasks[i].Name < tasks[j].Name
-		})
-	case domain.ColumnStatus:
-		sort.Slice(tasks, func(i, j int) bool {
-			if input.Desc {
-				return tasks[i].Status.String() > tasks[j].Status.String()
-			}
-			return tasks[i].Status.String() < tasks[j].Status.String()
-		})
-	case domain.ColumnCreatedAt:
-		sort.Slice(tasks, func(i, j int) bool {
-			if input.Desc {
-				return tasks[i].CreatedAt.Before(tasks[j].CreatedAt)
-			}
-			return tasks[i].CreatedAt.After(tasks[j].CreatedAt)
-		})
-	case domain.ColumnUpdatedAt:
-		sort.Slice(tasks, func(i, j int) bool {
-			if input.Desc {
-				return tasks[i].UpdatedAt.Before(tasks[j].UpdatedAt)
-			}
-			return tasks[i].UpdatedAt.After(tasks[j].UpdatedAt)
-		})
-	case domain.ColumnDescription:
-		sort.Slice(tasks, func(i, j int) bool {
-			if input.Desc {
-				return utils.ValueFromPointer(tasks[i].Description) > utils.ValueFromPointer(tasks[j].Description)
-			}
-			return utils.ValueFromPointer(tasks[i].Description) < utils.ValueFromPointer(tasks[j].Description)
-		})
-	}
+	slices.SortFunc(tasks, func(a, b domain.Task) int {
+		var result int
+
+		switch columnName {
+		case domain.ColumnName:
+			result = cmp.Compare(a.Name, b.Name)
+		case domain.ColumnCreatedAt:
+			result = cmp.Compare(a.CreatedAt.Unix(), b.CreatedAt.Unix())
+		case domain.ColumnUpdatedAt:
+			result = cmp.Compare(a.UpdatedAt.Unix(), b.UpdatedAt.Unix())
+		case domain.ColumnStatus:
+			result = cmp.Compare(a.Status.String(), b.Status.String())
+		case domain.ColumnDescription:
+			result = cmp.Compare(
+				utils.ValueFromPointer(a.Description),
+				utils.ValueFromPointer(b.Description),
+			)
+		}
+
+		if input.Desc {
+			result = -result
+		}
+
+		return result
+	})
 
 	return tasks, nil
 }
@@ -100,7 +88,7 @@ func (uc *GetTasksUseCaseImpl) filter(tasks []domain.Task, input dto.GetTaskList
 
 	status, err := domain.ParseStatus(input.Status)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse status: %w", ErrInvalidTaskStatus)
+		return nil, fmt.Errorf("Failed to parse status: %w", err)
 	}
 
 	tasks = slices.DeleteFunc(tasks, func(t domain.Task) bool {

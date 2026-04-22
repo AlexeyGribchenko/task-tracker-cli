@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"strings"
@@ -10,16 +9,10 @@ import (
 	"github.com/fatih/color"
 )
 
-var (
-	ErrTaskNameNotProvided = errors.New("Task name is not provided !")
-	ErrInvalidTaskName     = errors.New("Task name should not be empty!")
-	ErrCreateFailed        = errors.New("Failed to create task!")
-)
-
 func (a *App) Create(args []string) error {
 
 	if len(args) == 0 {
-		return ErrTaskNameNotProvided
+		return ErrNotEnoughArguments
 	}
 
 	newFlags := flag.NewFlagSet("add", flag.ContinueOnError)
@@ -29,25 +22,19 @@ func (a *App) Create(args []string) error {
 	newFlags.Parse(args[1:])
 
 	name := strings.Trim(args[0], "\"")
-	if name == "" {
-		// А должно ли оно тут быть?
-		// Или это нужно вынести в бизнес-логику? думаю да
-		return ErrInvalidTaskName
-	}
 
 	input := dto.CreateTask{
-		Name: name,
+		Name:        name,
+		Description: nil,
 	}
 
-	if description == "" {
-		input.Description = nil
-	} else {
+	if description != "" {
 		input.Description = &description
 	}
 
 	task, err := a.createUC.Execute(input)
 	if err != nil {
-		return ErrCreateFailed
+		return fmt.Errorf("Failed to create task: %w", err)
 	}
 
 	fmt.Println(color.GreenString("Task succsessfuly created: " + task.Name))

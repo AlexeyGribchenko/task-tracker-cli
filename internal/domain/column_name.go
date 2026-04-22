@@ -20,6 +20,9 @@ var (
 	ErrInvalidColumnName = errors.New("Invalid column name")
 )
 
+// ParseColumnName parses column name
+// If name valid returns ColumnTitle
+// If column name invalid, returns ErrInvalidColumnName
 func ParseColumnName(name string) (ColumnTitle, error) {
 
 	name = strings.ToLower(name)

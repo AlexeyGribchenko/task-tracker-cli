@@ -18,16 +18,15 @@ func NewCreateTaskUseCase(db TaskCreator) CreateTaskUseCase {
 }
 
 func (uc *CreateTaskUseCaseImpl) Execute(input dto.CreateTask) (*domain.Task, error) {
-	const op = "usecase.create.Execute"
 
 	task, err := domain.NewTask(input.Name, input.Description)
 	if err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)
+		return nil, fmt.Errorf("Failed to create new task: %w", err)
 	}
 
 	task, err = uc.db.CreateTask(*task)
 	if err != nil {
-		return nil, fmt.Errorf("usecase.create: failed to create task in db: %w", err)
+		return nil, fmt.Errorf("Failed to save task in database: %w", err)
 	}
 
 	return task, nil

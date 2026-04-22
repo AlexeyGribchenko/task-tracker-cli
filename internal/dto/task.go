@@ -19,12 +19,3 @@ type GetTaskList struct {
 	SortBy string
 	Desc   bool
 }
-
-type GetTasksSorted struct {
-	ColumnSorted string
-}
-
-type GetTasksFiltered struct {
-	ColumnFiltered string
-	FilterValue    string
-}

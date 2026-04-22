@@ -49,11 +49,3 @@ type UpdateTaskStatusUseCase interface {
 type RemoveTaskUseCase interface {
 	Execute(input dto.RemoveTask) error
 }
-
-type GetTasksSortedUseCase interface {
-	Execute(input dto.GetTasksSorted) ([]domain.Task, error)
-}
-
-type GetTasksFilteredUseCase interface {
-	Execute(input dto.GetTasksFiltered) ([]domain.Task, error)
-}
