@@ -8,6 +8,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/infrastructure/repository/sqlite"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/colors"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/fatih/color"
 )
 
@@ -20,6 +21,15 @@ const configPath = ".env"
 // TODO: add statistics: percentage of tasks by status | by time (today, weekly, montly)
 func main() {
 
+	if err := run(); err != nil {
+		fmt.Println(color.RedString("Error:"), err)
+		os.Exit(1)
+	}
+	os.Exit(0)
+}
+
+func run() error {
+
 	cfg := config.ParseConfig(configPath)
 
 	colors.Init(cfg.Color)
@@ -29,11 +39,8 @@ func main() {
 		panic("failed to initialize db: " + err.Error())
 	}
 
-	app := cli.New(db, cfg)
+	writer := writer.New(cfg.Format)
+	app := cli.New(db, *writer)
 
-	if err := app.Run(); err != nil {
-		fmt.Println(color.RedString("Error:"), err)
-		os.Exit(1)
-	}
-	os.Exit(0)
+	return app.Run()
 }

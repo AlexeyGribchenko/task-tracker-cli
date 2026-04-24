@@ -2,16 +2,15 @@ package cli
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
-	"github.com/AlexeyGribchenko/task-tracker-cli/internal/config"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/create"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/list"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/remove"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/update"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
-	"github.com/fatih/color"
-)
-
-var (
-	ErrNotEnoughArguments = errors.New("Not enough arguments")
 )
 
 // TODO: COMMAND ID set -s (status) -d (description) -n (name)
@@ -22,37 +21,36 @@ const (
 	CommandRemoveTask    = "rm"
 )
 
+var (
+	ErrNotEnoughArguments = errors.New("Not enough arguments")
+)
+
 type Repository interface {
 	usecase.TaskGetter
 	usecase.TaskCreator
 	usecase.TaskUpdater
 	usecase.TaskRemover
-	usecase.TaskSortedGetter
+}
+
+type Command interface {
+	Execute(args []string) error
 }
 
 type App struct {
-	createUC usecase.CreateTaskUseCase
-	getAllUC usecase.GetTasksUseCase
-	updateUC usecase.UpdateTaskStatusUseCase
-	removeUC usecase.RemoveTaskUseCase
-	writer   *writer.TableWriter
+	commands map[string]Command
 }
 
-func New(db Repository, cfg *config.Config) *App {
+func New(db Repository, wr writer.TableWriter) *App {
 
-	getUC := usecase.NewGetTasksUseCase(db)
-	createUC := usecase.NewCreateTaskUseCase(db)
-	updateUC := usecase.NewUpdateTaskUseCase(db)
-	removeUC := usecase.NewRemoveTaskUseCase(db)
-
-	writer := writer.New(cfg.Format)
+	newCommands := map[string]Command{
+		CommandCreateTask:    initCreateCommand(db, wr),
+		CommandGetTaskList:   initListCommand(db, wr),
+		CommandSetTaskStatus: initStatusCommand(db, wr),
+		CommandRemoveTask:    initRemoveCommand(db, wr),
+	}
 
 	return &App{
-		createUC: createUC,
-		getAllUC: getUC,
-		updateUC: updateUC,
-		removeUC: removeUC,
-		writer:   writer,
+		commands: newCommands,
 	}
 }
 
@@ -64,19 +62,42 @@ func (a *App) Run() error {
 		return ErrNotEnoughArguments
 	}
 
-	command := args[1]
-	args = os.Args[2:]
+	commandName := args[1]
 
-	switch command {
-	case CommandGetTaskList:
-		return a.List(args)
-	case CommandCreateTask:
-		return a.Create(args)
-	case CommandSetTaskStatus:
-		return a.Set(args)
-	case CommandRemoveTask:
-		return a.Remove(args)
-	default:
-		return errors.New("Invalid command: " + color.New(color.Bold).Sprint(command))
+	cmd, commandFound := a.commands[commandName]
+	if !commandFound {
+		return fmt.Errorf("Invalid command: %s", commandName)
 	}
+
+	commandArgs := os.Args[2:]
+
+	return cmd.Execute(commandArgs)
+}
+
+func initCreateCommand(db Repository, wr writer.TableWriter) *create.CommandCreate {
+	return create.New(
+		usecase.NewCreateTaskUseCase(db),
+		&wr,
+	)
+}
+
+func initListCommand(db Repository, wr writer.TableWriter) *list.CommandList {
+	return list.New(
+		usecase.NewGetTasksUseCase(db),
+		&wr,
+	)
+}
+
+func initRemoveCommand(db Repository, wr writer.TableWriter) *remove.CommandRemove {
+	return remove.New(
+		usecase.NewRemoveTaskUseCase(db),
+		&wr,
+	)
+}
+
+func initStatusCommand(db Repository, wr writer.TableWriter) *update.CommandUpdate {
+	return update.New(
+		usecase.NewUpdateTaskUseCase(db),
+		&wr,
+	)
 }

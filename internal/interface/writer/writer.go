@@ -1,9 +1,12 @@
 package writer
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/domain"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/utils"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 	"github.com/olekukonko/tablewriter/renderer"
@@ -77,4 +80,53 @@ func (tw *TableWriter) AddRow(row []string) {
 
 func (tw *TableWriter) Render() error {
 	return tw.writer.Render()
+}
+
+func (tw *TableWriter) PrintSuccessMessage(message string) {
+	fmt.Println(color.GreenString(message))
+}
+
+func (tw *TableWriter) RenderTable(tasks []domain.Task) error {
+	if len(tasks) == 0 {
+		fmt.Println("No tasks yet...")
+		return nil
+	}
+
+	for _, task := range tasks {
+		status := task.Status
+
+		statusStr := task.Status.String()
+
+		switch status {
+		case domain.TaskStatusCreated:
+			statusStr = color.HiBlueString(statusStr)
+		case domain.TaskStatusActive:
+			statusStr = color.HiYellowString(statusStr)
+		case domain.TaskStatusCompleted:
+			statusStr = color.HiGreenString(statusStr)
+		case domain.TaskStatusCancelled:
+			statusStr = color.HiRedString(statusStr)
+		}
+
+		row := make([]string, 0, 6)
+		for _, field := range tw.HeaderFields {
+			switch field {
+			case domain.ColumnId:
+				row = append(row, fmt.Sprintf("%d", task.ID))
+			case domain.ColumnName:
+				row = append(row, task.Name)
+			case domain.ColumnDescription:
+				row = append(row, utils.ValueFromPointer(task.Description))
+			case domain.ColumnUpdatedAt:
+				row = append(row, task.UpdatedAt.Format("15:04 02.01"))
+			case domain.ColumnCreatedAt:
+				row = append(row, task.CreatedAt.Format("15:04 02.01"))
+			case domain.ColumnStatus:
+				row = append(row, statusStr)
+			}
+		}
+
+		tw.AddRow(row)
+	}
+	return tw.Render()
 }

@@ -9,6 +9,7 @@ import (
 var (
 	ErrInvalidTaskStatus = errors.New("Invalid task status")
 	ErrInvalidTaskName   = errors.New("Invalid task name")
+	ErrInvalidTaskID     = errors.New("Invalid task ID")
 )
 
 type TaskStatus string
