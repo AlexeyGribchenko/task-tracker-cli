@@ -11,7 +11,7 @@ import (
 )
 
 type Config struct {
-	StoragePath    string `env:"SQLITE_STORAGE_PATH" default:"./storage/task_storaeg.db"`
+	StoragePath    string `env:"SQLITE_STORAGE_PATH" default:"./storage/task_storage.db"`
 	MigrationsPath string `env:"SQLITE_MIGRATIONS_PATH" default:"./migrations"`
 }
 

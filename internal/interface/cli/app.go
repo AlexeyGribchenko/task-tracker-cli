@@ -8,7 +8,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/create"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/list"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/remove"
-	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/update"
+	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/update"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/writer"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/usecase"
 )

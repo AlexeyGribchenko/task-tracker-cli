@@ -90,6 +90,17 @@ func TestGetAll(t *testing.T) {
 			},
 		},
 		{
+			name:  "OK - sort only by desc",
+			input: dto.GetTaskList{Desc: true},
+			mockBehaviour: func(s *mocks.MockTaskGetter) {
+				s.EXPECT().GetTasks().Return(slices.Clone(taskList), nil)
+			},
+			errorExpected: false,
+			expectedResult: []domain.Task{
+				task4, task3, task2, task1,
+			},
+		},
+		{
 			name:  "OK - sort name",
 			input: dto.GetTaskList{SortBy: domain.ColumnName},
 			mockBehaviour: func(s *mocks.MockTaskGetter) {

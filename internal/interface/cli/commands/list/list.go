@@ -8,6 +8,7 @@ import (
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/dto"
 )
 
+//go:generate mockgen -source=list.go -destination=mocks/list_mock.go -package=mocks
 type TaskWriter interface {
 	RenderTable(tasks []domain.Task) error
 }

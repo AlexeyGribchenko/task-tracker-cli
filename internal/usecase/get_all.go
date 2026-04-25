@@ -42,8 +42,12 @@ func (uc *GetTasksUseCaseImpl) Execute(input dto.GetTaskList) ([]domain.Task, er
 
 func (uc *GetTasksUseCaseImpl) sort(tasks []domain.Task, input dto.GetTaskList) ([]domain.Task, error) {
 
-	if input.SortBy == "" || input.SortBy == domain.ColumnId {
+	if (input.SortBy == "" || input.SortBy == domain.ColumnId) && !input.Desc {
 		return tasks, nil
+	}
+
+	if input.SortBy == "" && input.Desc {
+		input.SortBy = domain.ColumnId
 	}
 
 	columnName, err := domain.ParseColumnName(input.SortBy)
@@ -55,6 +59,8 @@ func (uc *GetTasksUseCaseImpl) sort(tasks []domain.Task, input dto.GetTaskList) 
 		var result int
 
 		switch columnName {
+		case domain.ColumnId:
+			result = cmp.Compare(a.ID, b.ID)
 		case domain.ColumnName:
 			result = cmp.Compare(a.Name, b.Name)
 		case domain.ColumnCreatedAt:

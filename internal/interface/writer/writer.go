@@ -74,14 +74,6 @@ func isColumnNameValid(name string) bool {
 	return false
 }
 
-func (tw *TableWriter) AddRow(row []string) {
-	tw.writer.Append(row)
-}
-
-func (tw *TableWriter) Render() error {
-	return tw.writer.Render()
-}
-
 func (tw *TableWriter) PrintSuccessMessage(message string) {
 	fmt.Println(color.GreenString(message))
 }
@@ -126,7 +118,7 @@ func (tw *TableWriter) RenderTable(tasks []domain.Task) error {
 			}
 		}
 
-		tw.AddRow(row)
+		tw.writer.Append(row)
 	}
-	return tw.Render()
+	return tw.writer.Render()
 }
