@@ -29,8 +29,8 @@ func TestParseStatus(t *testing.T) {
 			expectedStatus: TaskStatusCreated,
 		},
 		{
-			name:           "OK - valid task status (completed)",
-			input:          "completed",
+			name:           "OK - valid task status (done)",
+			input:          "done",
 			errorExpected:  false,
 			expectedStatus: TaskStatusCompleted,
 		},
@@ -158,9 +158,9 @@ func TestTaskStatusString(t *testing.T) {
 			expectedOutput: "created",
 		},
 		{
-			name:           "OK - Status 'completed'",
+			name:           "OK - Status 'done'",
 			status:         TaskStatusCompleted,
-			expectedOutput: "completed",
+			expectedOutput: "done",
 		},
 		{
 			name:           "OK - Status 'cancelled'",

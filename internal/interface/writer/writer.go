@@ -103,17 +103,17 @@ func (tw *TableWriter) RenderTable(tasks []domain.Task) error {
 		row := make([]string, 0, 6)
 		for _, field := range tw.HeaderFields {
 			switch field {
-			case domain.ColumnId:
+			case ValidIdName:
 				row = append(row, fmt.Sprintf("%d", task.ID))
-			case domain.ColumnName:
+			case ValidTaskNameName:
 				row = append(row, task.Name)
-			case domain.ColumnDescription:
+			case ValidDescriptionName:
 				row = append(row, utils.ValueFromPointer(task.Description))
-			case domain.ColumnUpdatedAt:
+			case ValidUpdatedName:
 				row = append(row, task.UpdatedAt.Format("15:04 02.01"))
-			case domain.ColumnCreatedAt:
+			case ValidCreatedName:
 				row = append(row, task.CreatedAt.Format("15:04 02.01"))
-			case domain.ColumnStatus:
+			case ValidStatusName:
 				row = append(row, statusStr)
 			}
 		}

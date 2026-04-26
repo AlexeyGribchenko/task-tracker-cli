@@ -20,7 +20,7 @@ func (t TaskStatus) String() string {
 
 const (
 	StrCreated   = "created"
-	StrCompleted = "completed"
+	StrCompleted = "done"
 	StrActive    = "active"
 	StrCancelled = "cancelled"
 

@@ -31,8 +31,8 @@ func TestUpdateUseCase(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:  "OK - valid input: completed status",
-			input: dto.UpdateTask{ID: 1, Status: "completed"},
+			name:  "OK - valid input: done status",
+			input: dto.UpdateTask{ID: 1, Status: "done"},
 			mockBehaviour: func(s *mocks.MockTaskUpdater, input dto.UpdateTask) {
 				s.EXPECT().UpdateTaskStatus(input.ID, domain.TaskStatusCompleted).Return(nil)
 			},
