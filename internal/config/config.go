@@ -13,10 +13,10 @@ type Config struct {
 	Color  colors.Config
 }
 
-func ParseConfig(configPath string) *Config {
+func ParseConfig(configPath string) (*Config, error) {
 	cfg := &Config{}
 
-	cleanenv.ReadConfig(configPath, cfg)
+	err := cleanenv.ReadConfig(configPath, cfg)
 
-	return cfg
+	return cfg, err
 }

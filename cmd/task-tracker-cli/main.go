@@ -30,13 +30,16 @@ func main() {
 
 func run() error {
 
-	cfg := config.ParseConfig(configPath)
+	cfg, err := config.ParseConfig(configPath)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to parse config file: %s", err.Error()))
+	}
 
 	colors.Init(cfg.Color)
 
 	db, err := sqlite.New(cfg.Sqlite)
 	if err != nil {
-		panic("failed to initialize db: " + err.Error())
+		panic("Failed to initialize db: " + err.Error())
 	}
 
 	writer := writer.New(cfg.Format)

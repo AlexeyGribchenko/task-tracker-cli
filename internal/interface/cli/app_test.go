@@ -126,6 +126,8 @@ func TestApp(t *testing.T) {
 
 			if tc.errorExpected {
 				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
 			}
 		})
 	}
