@@ -25,6 +25,7 @@ var (
 	ErrNotEnoughArguments = errors.New("Not enough arguments")
 )
 
+//go:generate mockgen -source=app.go -destination=mocks/app_mock.go -package=mocks
 type Repository interface {
 	usecase.TaskGetter
 	usecase.TaskCreator
