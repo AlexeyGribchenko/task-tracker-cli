@@ -1,10 +1,10 @@
 package cli
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
+	cmd "github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/create"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/list"
 	"github.com/AlexeyGribchenko/task-tracker-cli/internal/interface/cli/commands/remove"
@@ -19,10 +19,6 @@ const (
 	CommandSetTaskStatus = "status"
 	CommandGetTaskList   = "list"
 	CommandRemoveTask    = "rm"
-)
-
-var (
-	ErrNotEnoughArguments = errors.New("Not enough arguments")
 )
 
 //go:generate mockgen -source=app.go -destination=mocks/app_mock.go -package=mocks
@@ -60,7 +56,7 @@ func (a *App) Run() error {
 	args := os.Args
 
 	if len(args) < 2 {
-		return ErrNotEnoughArguments
+		return cmd.ErrNotEnoughArguments
 	}
 
 	commandName := args[1]

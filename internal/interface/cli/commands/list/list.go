@@ -52,7 +52,7 @@ func parseListFlags(args []string) (dto.GetTaskList, error) {
 	var desc bool
 
 	newFlags.StringVar(&sortedColumn, "s", "", "name of a column that will be sorted")
-	newFlags.StringVar(&status, "f", "", "status wich is used to filter task list")
+	newFlags.StringVar(&status, "f", "", "filter tasks by status (created, active, done, canceled)")
 	newFlags.BoolVar(&desc, "desc", false, "sorting order")
 	err := newFlags.Parse(args)
 

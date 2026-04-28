@@ -36,7 +36,8 @@ func New(cfg Config) *TableWriter {
 		Column: renderer.Tint{
 			FG: renderer.Colors{color.FgHiWhite},
 		},
-		// It just fixes bug with rendering on linux
+		// FIXME: Workaround for Linux terminal rendering issue with table borders
+		// Setting ResetBlinking prevents flickering/artifacts in some terminals
 		Border: renderer.Tint{
 			BG: renderer.Colors{color.ResetBlinking},
 		},
@@ -101,8 +102,8 @@ func (tw *TableWriter) RenderTable(tasks []domain.Task) error {
 		}
 
 		row := make([]string, 0, 6)
-		for _, field := range tw.HeaderFields {
-			switch field {
+		for _, header := range tw.HeaderFields {
+			switch header {
 			case ValidIdName:
 				row = append(row, fmt.Sprintf("%d", task.ID))
 			case ValidTaskNameName:
