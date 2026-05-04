@@ -20,17 +20,17 @@ type Storage struct {
 
 func New(cfg Config) (*Storage, error) {
 
-	storage, err := sql.Open("sqlite3", cfg.StoragePath)
+	db, err := sql.Open("sqlite3", cfg.StoragePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to sqlite3 db: %w", err)
 	}
 
-	return &Storage{db: storage}, nil
+	return &Storage{db: db}, nil
 }
 
 func (s *Storage) Close() error {
 	if s.db != nil {
 		return s.db.Close()
 	}
-	return nil
+	return fmt.Errorf("Failed to close db connection: db in nil!")
 }
